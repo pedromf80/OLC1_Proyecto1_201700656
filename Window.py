@@ -1,8 +1,6 @@
 import tkinter as tk
-import tkinter as messagebox
-import tkinter as filedialog
-from tkinter import  scrolledtext
-
+from tkinter import  scrolledtext, messagebox, filedialog
+import os
 
 #clase ventana
 class Window():
@@ -20,6 +18,7 @@ class Window():
         self.root.resizable(1,1)
         self.root.config(menu=self.menu)
         self.frame.pack()
+        self.frame.grid(row=2)
         self.frame.config(bg="white")
         self.frame.config(width="900", height="600")
         self.addTexbox()
@@ -28,8 +27,8 @@ class Window():
     #metodo que genera el menu del root window
     def initMenu(self):
         fileMenu = tk.Menu(self.menu, tearoff=0)
-        fileMenu.add_command(label="Nuevo", underline=1, command=self.fileDialog)
-        fileMenu.add_command(label="Abrir", command=filedialog)
+        fileMenu.add_command(label="Nuevo", underline=1, command=self.nuevo_archivo)
+        fileMenu.add_command(label="Abrir", command=self.arbrir_archivo)
         fileMenu.add_command(label="Guardar")
         fileMenu.add_command(label="Guardar Como")
         fileMenu.add_separator()
@@ -56,34 +55,31 @@ class Window():
         self.editor.pack(side="left", fill="both", expand=1)
         self.editor.config( wrap = "word", # use word wrapping
                undo = True, # Tk 8.4 
-               width = 80 )        
+               width = 40 )        
         self.editor.focus()
         self.yscrollbar.pack(side="right", fill="y")
         self.yscrollbar.config(command=self.editor.yview)        
         self.frame.pack(fill="both", expand=1)
 
-
-
-
-
-    '''
-    def save_if_modified(self, event=None):
+    #guardar archivo si se modifico    
+    def guardar_si_modifico(self, event=None): 
         if self.editor.edit_modified(): #modified
-            response = messagebox.askyesnocancel("Save?", "This document has been modified. Do you want to save changes?") #yes = True, no = False, cancel = None
-            if response: #yes/save
-                result = self.file_save()
-                if result == "saved": #saved
+            resultado = messagebox.askokcancel("Guadar?", "Este documento se modifico! Desea guardar los cambios?") #yes = True, no = False, cancel = None
+            if resultado: #yes/save
+                resultado = self.guardar_archivo()
+                if resultado == "saved": #saved
                     return True
                 else: #save cancelled
                     return None
             else:
-                return response #None = cancel/abort, False = no/discard
-        else: #not modified
+                return resultado #None = cancelar/abortar, False = no/descartado
+        else: #no midificado
             return True
-    
-    def file_new(self, event=None):
-        result = self.save_if_modified()
-        if result != None: #None => Aborted or Save cancelled, False => Discarded, True = Saved or Not modified
+        
+
+    def nuevo_archivo(self, event=None):
+        resultado = self.guardar_si_modifico()
+        if resultado != None: #None => Aborted or Save cancelled, False => Discarded, True = Saved or Not modified
             self.editor.delete(1.0, "end")
             self.editor.edit_modified(False)
             self.editor.edit_reset()
@@ -91,36 +87,36 @@ class Window():
             self.set_title()
             
 
-    def file_open(self, event=None, filepath=None):
-        result = self.save_if_modified()
-        if result != None: #None => Aborted or Save cancelled, False => Discarded, True = Saved or Not modified
-            if filepath == None:
-                filepath = filedialog.askopenfilename()
-            if filepath != None  and filepath != '':
-                with open(filepath, encoding="utf-8") as f:
+    def arbrir_archivo(self, event=None, ruta_archivo=None):
+        resultado = self.guardar_si_modifico()
+        if resultado != None: #None => Abortar o Guardar cancelar, False =>Descartar, True = Guardar o no modificar
+            if ruta_archivo == None:
+                ruta_archivo = tk.filedialog.askopenfilename()
+            if ruta_archivo != None  and ruta_archivo != '':
+                with open(ruta_archivo, encoding="utf-8") as f:
                     fileContents = f.read()# Get all the text from file.           
                 # Set current text to file contents
                 self.editor.delete(1.0, "end")
                 self.editor.insert(1.0, fileContents)
                 self.editor.edit_modified(False)
-                self.file_path = filepath
+                self.file_path = ruta_archivo
 
-    def file_save(self, event=None):
+    def guardar_archivo(self, event=None):
         if self.file_path == None:
-            result = self.file_save_as()
+            resultado = self.guardar_archivo_como()
         else:
-            result = self.file_save_as(filepath=self.file_path)
-        return result
+            resultado = self.guardar_archivo_como(ruta_archivo=self.file_path)
+        return resultado
 
-    def file_save_as(self, event=None, filepath=None):
-        if filepath == None:
-            filepath = filedialog.asksaveasfilename(filetypes=(('Text files', '*.txt'), ('Python files', '*.py *.pyw'), ('All files', '*.*'))) #defaultextension='.txt'
+    def guardar_archivo_como(self, event=None, ruta_archivo=None):
+        if ruta_archivo == None:
+            ruta_archivo = tk.filedialog.asksaveasfilename(filetypes=(('Text files', '*.txt'), ('Python files', '*.py *.pyw'), ('All files', '*.*'))) #defaultextension='.txt'
         try:
-            with open(filepath, 'wb') as f:
+            with open(ruta_archivo, 'wb') as f:
                 text = self.editor.get(1.0, "end-1c")
                 f.write(bytes(text, 'UTF-8'))
                 self.editor.edit_modified(False)
-                self.file_path = filepath
+                self.file_path = ruta_archivo
                 self.set_title()
                 return "saved"
         except FileNotFoundError:
@@ -128,8 +124,8 @@ class Window():
             return "cancelled"
 
     def file_quit(self, event=None):
-        result = self.save_if_modified()
-        if result != None: #None => Aborted or Save cancelled, False => Discarded, True = Saved or Not modified
+        resultado = self.guardar_si_modifico()
+        if resultado != None: #None => Aborted or Save cancelled, False => Discarded, True = Saved or Not modified
             self.root.destroy() #sys.exit(0)
 
     def set_title(self, event=None):
@@ -137,27 +133,14 @@ class Window():
             title = os.path.basename(self.file_path)
         else:
             title = "Untitled"
-        self.root.title(title + " - " + self.TITLE)
+        #self.root.title(title + " - " + self.TITLE)
         
     def undo(self, event=None):
         self.editor.edit_undo()
         
     def redo(self, event=None):
         self.editor.edit_redo()     
-    '''
-
-
-    #metodo de la clase para generar el file dialog
-    def fileDialog(self, event=None):
-        print("file dialg")
-        pass
-
-
-
-#funcion para abrir archivos    
-'''def openFile():
-    print("open file")
-'''
+    
 
 
 
