@@ -6,6 +6,7 @@ import os
 class Window():
     #constructor de la clase ventana para la app
     def __init__(self):
+        self.file_path = None
         self.root = tk.Tk()
         self.frame = tk.Frame()
         self.menu = tk.Menu(self.root)
@@ -18,7 +19,7 @@ class Window():
         self.root.resizable(1,1)
         self.root.config(menu=self.menu)
         self.frame.pack()
-        self.frame.grid(row=2)
+        #self.frame.grid(row=2)
         self.frame.config(bg="white")
         self.frame.config(width="900", height="600")
         self.addTexbox()
@@ -29,14 +30,14 @@ class Window():
         fileMenu = tk.Menu(self.menu, tearoff=0)
         fileMenu.add_command(label="Nuevo", underline=1, command=self.nuevo_archivo)
         fileMenu.add_command(label="Abrir", command=self.arbrir_archivo)
-        fileMenu.add_command(label="Guardar")
-        fileMenu.add_command(label="Guardar Como")
+        fileMenu.add_command(label="Guardar", command=self.guardar_archivo)
+        fileMenu.add_command(label="Guardar Como", command=self.guardar_archivo_como)
         fileMenu.add_separator()
-        fileMenu.add_command(label="Salir", command=self.root.quit)
+        fileMenu.add_command(label="Salir", command=self.file_quit)
         fileEdit = tk.Menu(self.menu,  tearoff=0)
-        fileEdit.add_command(label="Copiar")
-        fileEdit.add_command(label="Cortar")
-        fileEdit.add_command(label="Pegar")
+        fileEdit.add_command(label="Adelante", command=self.redo)
+        fileEdit.add_command(label="Atras", command=self.undo)
+        #fileEdit.add_command(label="Pegar")
         fileSetting = tk.Menu(self.menu, tearoff=0)
         analiticLex = tk.Menu(self.menu, tearoff=0)
         fileHelp = tk.Menu(self.menu,  tearoff=0)
@@ -55,7 +56,7 @@ class Window():
         self.editor.pack(side="left", fill="both", expand=1)
         self.editor.config( wrap = "word", # use word wrapping
                undo = True, # Tk 8.4 
-               width = 40 )        
+               width = 80 )        
         self.editor.focus()
         self.yscrollbar.pack(side="right", fill="y")
         self.yscrollbar.config(command=self.editor.yview)        
@@ -84,22 +85,27 @@ class Window():
             self.editor.edit_modified(False)
             self.editor.edit_reset()
             self.file_path = None
-            self.set_title()
+        #    self.set_title()
             
 
     def arbrir_archivo(self, event=None, ruta_archivo=None):
-        resultado = self.guardar_si_modifico()
-        if resultado != None: #None => Abortar o Guardar cancelar, False =>Descartar, True = Guardar o no modificar
-            if ruta_archivo == None:
-                ruta_archivo = tk.filedialog.askopenfilename()
-            if ruta_archivo != None  and ruta_archivo != '':
-                with open(ruta_archivo, encoding="utf-8") as f:
-                    fileContents = f.read()# Get all the text from file.           
-                # Set current text to file contents
-                self.editor.delete(1.0, "end")
-                self.editor.insert(1.0, fileContents)
-                self.editor.edit_modified(False)
-                self.file_path = ruta_archivo
+        try:
+            resultado = self.guardar_si_modifico()
+            if resultado != None: #None => Abortar o Guardar cancelar, False =>Descartar, True = Guardar o no modificar
+                if ruta_archivo == None:
+                    ruta_archivo = filedialog.askopenfilename(initialdir = "/home/pedro",title = "Select file",filetypes = (("Archivos html","*.html"),("Archivos de estilo css", "*.css"),("Archivos de fuente js", "*.js"), ("Todos los archivos","*.*")))
+                if ruta_archivo != None  and ruta_archivo != "":
+                    with open(ruta_archivo, encoding="utf-8") as f:
+                        fileContents = f.read()# Get all the text from file.           
+                    # Set current text to file contents
+                    self.editor.delete(1.0, "end")
+                    self.editor.insert(1.0, fileContents)
+                    self.editor.edit_modified(False)
+                    self.file_path = ruta_archivo
+                else:
+                    return
+        except:
+            return                
 
     def guardar_archivo(self, event=None):
         if self.file_path == None:
@@ -110,14 +116,14 @@ class Window():
 
     def guardar_archivo_como(self, event=None, ruta_archivo=None):
         if ruta_archivo == None:
-            ruta_archivo = tk.filedialog.asksaveasfilename(filetypes=(('Text files', '*.txt'), ('Python files', '*.py *.pyw'), ('All files', '*.*'))) #defaultextension='.txt'
+            ruta_archivo = tk.filedialog.asksaveasfilename(initialdir='/home/pedro', filetypes=(('Archivos html', '*.html'), ('Archivos de estilo css', '*.css'), ('Archivos fuente', '*.js'), ('Todos los archivos', '*.*'))) #defaultextension='.txt'
         try:
             with open(ruta_archivo, 'wb') as f:
                 text = self.editor.get(1.0, "end-1c")
                 f.write(bytes(text, 'UTF-8'))
                 self.editor.edit_modified(False)
                 self.file_path = ruta_archivo
-                self.set_title()
+        #        self.set_title()
                 return "saved"
         except FileNotFoundError:
             print('FileNotFoundError')
@@ -128,13 +134,16 @@ class Window():
         if resultado != None: #None => Aborted or Save cancelled, False => Discarded, True = Saved or Not modified
             self.root.destroy() #sys.exit(0)
 
+    '''
     def set_title(self, event=None):
         if self.file_path != None:
             title = os.path.basename(self.file_path)
         else:
             title = "Untitled"
         #self.root.title(title + " - " + self.TITLE)
-        
+    '''
+
+    #comandos basicos de ededion de texto
     def undo(self, event=None):
         self.editor.edit_undo()
         
