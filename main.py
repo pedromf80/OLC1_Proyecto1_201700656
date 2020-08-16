@@ -1,4 +1,4 @@
-from Window import* 
+from Window import Window 
 
 #clase que inicia el programa
 class Init():
