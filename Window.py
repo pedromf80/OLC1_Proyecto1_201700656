@@ -7,6 +7,7 @@ class Window():
     #constructor de la clase ventana para la app
     def __init__(self):
         self.file_path = None
+        self.lexfile = None
         self.root = tk.Tk()
         self.frame = tk.Frame()
         self.menu = tk.Menu(self.root)
@@ -40,11 +41,12 @@ class Window():
         #fileEdit.add_command(label="Pegar")
         fileSetting = tk.Menu(self.menu, tearoff=0)
         analiticLex = tk.Menu(self.menu, tearoff=0)
+        analiticLex.add_command(label='Analizar Archivo', command=self.run_lex_analyzer)
         fileHelp = tk.Menu(self.menu,  tearoff=0)
         fileReport = tk.Menu(self.menu, tearoff=0)
         self.menu.add_cascade(label="Archivo", menu=fileMenu)
         self.menu.add_cascade(label="Editar", menu=fileEdit)
-        self.menu.add_cascade(label="Analizar", menu=analiticLex)
+        self.menu.add_cascade(label="Analizador Lexico", menu=analiticLex)
         self.menu.add_cascade(label="Configuracion", menu=fileSetting)
         self.menu.add_cascade(label="Reporte", menu=fileReport)
         self.menu.add_cascade(label="Ayuda", menu=fileHelp)
@@ -134,14 +136,6 @@ class Window():
         if resultado != None: #None => Aborted or Save cancelled, False => Discarded, True = Saved or Not modified
             self.root.destroy() #sys.exit(0)
 
-    '''
-    def set_title(self, event=None):
-        if self.file_path != None:
-            title = os.path.basename(self.file_path)
-        else:
-            title = "Untitled"
-        #self.root.title(title + " - " + self.TITLE)
-    '''
 
     #comandos basicos de ededion de texto
     def undo(self, event=None):
@@ -150,7 +144,12 @@ class Window():
     def redo(self, event=None):
         self.editor.edit_redo()     
     
-
+    #metodo para el analisis del archivo
+    def run_lex_analyzer(self, event=None):
+        #if self.file_path == None
+        input_string = self.editor.get('1.0', 'end-1c')
+        print(input_string)
+        pass
 
 
 
