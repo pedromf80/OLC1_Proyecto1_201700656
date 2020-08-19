@@ -19,11 +19,12 @@ class Window():
         self.root.title("ML WEB EDITOR")
         self.root.resizable(1,1)
         self.root.config(menu=self.menu)
-        self.frame.pack()
-        #self.frame.grid(row=2)
+        #self.frame.pack()
         self.frame.config(bg="white")
         self.frame.config(width="900", height="600")
+        self.frame.grid(row=0,column=0,columnspan=10,pady=10)
         self.addTexbox()
+        self.addConsole()
         self.initMenu() #metodo que inicia todos los componentes del menu
 
     #metodo que genera el menu del root window
@@ -55,14 +56,34 @@ class Window():
     def addTexbox(self):
         self.yscrollbar = tk.Scrollbar(self.frame, orient="vertical")
         self.editor = tk.Text(self.frame, yscrollcommand=self.yscrollbar.set)
-        self.editor.pack(side="left", fill="both", expand=1)
+        self.editor.grid(row=0, column=0)
+        #self.editor.set(yscrollcommand="vertical")
+        '''self.editor.pack(side="left", fill="both", expand=1)
         self.editor.config( wrap = "word", # use word wrapping
                undo = True, # Tk 8.4 
                width = 80 )        
+        '''
         self.editor.focus()
-        self.yscrollbar.pack(side="right", fill="y")
+        #self.yscrollbar.pack(side="right", fill="y")
         self.yscrollbar.config(command=self.editor.yview)        
-        self.frame.pack(fill="both", expand=1)
+        #self.frame.pack(fill="both", expand=1)
+
+    def addConsole(self):
+        self.yscrollbar = tk.Scrollbar(orient="vertical")
+        self.console = tk.Text(self.frame, yscrollcommand=self.yscrollbar.set, bg="black", fg="green", insertbackground="white")
+        self.console.grid(row=1, column=0)
+     
+        '''self.console.pack(side="left", fill="both", expand=1)
+        self.console.config( wrap = "word", # use word wrapping
+               undo = True, # Tk 8.4 
+               width = 40 )        
+        self.console.focus()
+        self.yscrollbar.pack(side="right", fill="y")
+        '''
+        self.yscrollbar.grid(row=1, column=0)
+        self.yscrollbar.config(command=self.editor.yview)        
+        #self.frame.pack(fill="both", expand=1)
+
 
     #guardar archivo si se modifico    
     def guardar_si_modifico(self, event=None): 
