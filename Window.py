@@ -1,10 +1,10 @@
 import tkinter as tk
-from tkinter import  scrolledtext, messagebox, filedialog
+from tkinter import scrolledtext, messagebox, filedialog
 import os
 
-#clase ventana
+# clase ventana
 class Window():
-    #constructor de la clase ventana para la app
+    # constructor de la clase ventana para la app
     def __init__(self):
         self.file_path = None
         self.lexfile = None
@@ -12,37 +12,39 @@ class Window():
         self.frame = tk.Frame()
         self.menu = tk.Menu(self.root)
         self.initComponents()
+        self.highlighter(None)
         self.root.mainloop()
 
-    #metodo que inicia todo los componentes de nuestra principal
+    # metodo que inicia todo los componentes de nuestra principal
     def initComponents(self):
         self.root.title("ML WEB EDITOR")
-        self.root.resizable(1,1)
+        self.root.resizable(1, 1)
         self.root.config(menu=self.menu)
-        #self.frame.pack()
-        self.frame.config(bg="white")
-        self.frame.config(width="900", height="600")
-        self.frame.grid(row=0,column=0,columnspan=10,pady=10)
+        self.frame.pack(expand=1, fill=tk.BOTH)
         self.addTexbox()
         self.addConsole()
-        self.initMenu() #metodo que inicia todos los componentes del menu
+        self.initMenu()  # metodo que inicia todos los componentes del menu
 
-    #metodo que genera el menu del root window
+    # metodo que genera el menu del root window
     def initMenu(self):
         fileMenu = tk.Menu(self.menu, tearoff=0)
-        fileMenu.add_command(label="Nuevo", underline=1, command=self.nuevo_archivo)
+        fileMenu.add_command(label="Nuevo", underline=1,
+                             command=self.nuevo_archivo)
         fileMenu.add_command(label="Abrir", command=self.arbrir_archivo)
         fileMenu.add_command(label="Guardar", command=self.guardar_archivo)
-        fileMenu.add_command(label="Guardar Como", command=self.guardar_archivo_como)
+        fileMenu.add_command(label="Guardar Como",
+                             command=self.guardar_archivo_como)
         fileMenu.add_separator()
         fileMenu.add_command(label="Salir", command=self.file_quit)
         fileEdit = tk.Menu(self.menu,  tearoff=0)
         fileEdit.add_command(label="Adelante", command=self.redo)
         fileEdit.add_command(label="Atras", command=self.undo)
-        #fileEdit.add_command(label="Pegar")
+        fileEdit.add_command(label="Limpiar", command=self.reset)
+        # fileEdit.add_command(label="Pegar")
         fileSetting = tk.Menu(self.menu, tearoff=0)
         analiticLex = tk.Menu(self.menu, tearoff=0)
-        analiticLex.add_command(label='Analizar Archivo', command=self.run_lex_analyzer)
+        analiticLex.add_command(label='Analizar Archivo',
+                                command=self.run_lex_analyzer)
         fileHelp = tk.Menu(self.menu,  tearoff=0)
         fileReport = tk.Menu(self.menu, tearoff=0)
         self.menu.add_cascade(label="Archivo", menu=fileMenu)
@@ -52,74 +54,60 @@ class Window():
         self.menu.add_cascade(label="Reporte", menu=fileReport)
         self.menu.add_cascade(label="Ayuda", menu=fileHelp)
 
-    #genera el texbox del la de entra y salida de texto
+    # genera el texbox del la de entra y salida de texto
     def addTexbox(self):
-        self.yscrollbar = tk.Scrollbar(self.frame, orient="vertical")
-        self.editor = tk.Text(self.frame, yscrollcommand=self.yscrollbar.set)
-        self.editor.grid(row=0, column=0)
-        #self.editor.set(yscrollcommand="vertical")
-        '''self.editor.pack(side="left", fill="both", expand=1)
-        self.editor.config( wrap = "word", # use word wrapping
-               undo = True, # Tk 8.4 
-               width = 80 )        
-        '''
+        self.label = tk.Label(self.frame, text='Entrada', height=1)
+        self.label.pack(expand=0, fill=tk.X)
+        self.editor = scrolledtext.ScrolledText(self.frame, wrap=tk.WORD)
+        self.editor.config(bg='#001a33', insertbackground='white', fg='#b3b3b3')
+        self.editor.pack(expand=1, fill=tk.BOTH)
         self.editor.focus()
-        #self.yscrollbar.pack(side="right", fill="y")
-        self.yscrollbar.config(command=self.editor.yview)        
-        #self.frame.pack(fill="both", expand=1)
+        self.editor.bind('<Key>', self.highlighter)
 
     def addConsole(self):
-        self.yscrollbar = tk.Scrollbar(orient="vertical")
-        self.console = tk.Text(self.frame, yscrollcommand=self.yscrollbar.set, bg="black", fg="green", insertbackground="white")
-        self.console.grid(row=1, column=0)
-     
-        '''self.console.pack(side="left", fill="both", expand=1)
-        self.console.config( wrap = "word", # use word wrapping
-               undo = True, # Tk 8.4 
-               width = 40 )        
-        self.console.focus()
-        self.yscrollbar.pack(side="right", fill="y")
-        '''
-        self.yscrollbar.grid(row=1, column=0)
-        self.yscrollbar.config(command=self.editor.yview)        
-        #self.frame.pack(fill="both", expand=1)
+        self.label = tk.Label(self.frame, text='Consola')
+        self.label.pack(expand=0, fill=tk.X)
+        self.console = scrolledtext.ScrolledText(self.frame, wrap=tk.WORD)
+        self.console.configure(height=10, background='black', fg='green')
+        self.console.pack(expand=0, fill=tk.BOTH)
 
+    # guardar archivo si se modifico
 
-    #guardar archivo si se modifico    
-    def guardar_si_modifico(self, event=None): 
-        if self.editor.edit_modified(): #modified
-            resultado = messagebox.askokcancel("Guadar?", "Este documento se modifico! Desea guardar los cambios?") #yes = True, no = False, cancel = None
-            if resultado: #yes/save
+    def guardar_si_modifico(self, event=None):
+        if self.editor.edit_modified():  # modified
+            # yes = True, no = False, cancel = None
+            resultado = messagebox.askokcancel(
+                "Guadar?", "Este documento se modifico! Desea guardar los cambios?")
+            if resultado:  # yes/save
                 resultado = self.guardar_archivo()
-                if resultado == "saved": #saved
+                if resultado == "saved":  # saved
                     return True
-                else: #save cancelled
+                else:  # save cancelled
                     return None
             else:
-                return resultado #None = cancelar/abortar, False = no/descartado
-        else: #no midificado
+                return resultado  # None = cancelar/abortar, False = no/descartado
+        else:  # no midificado
             return True
-        
 
     def nuevo_archivo(self, event=None):
         resultado = self.guardar_si_modifico()
-        if resultado != None: #None => Aborted or Save cancelled, False => Discarded, True = Saved or Not modified
+        if resultado != None:  # None => Aborted or Save cancelled, False => Discarded, True = Saved or Not modified
             self.editor.delete(1.0, "end")
             self.editor.edit_modified(False)
             self.editor.edit_reset()
             self.file_path = None
         #    self.set_title()
-            
 
     def arbrir_archivo(self, event=None, ruta_archivo=None):
         try:
             resultado = self.guardar_si_modifico()
-            if resultado != None: #None => Abortar o Guardar cancelar, False =>Descartar, True = Guardar o no modificar
+            if resultado != None:  # None => Abortar o Guardar cancelar, False =>Descartar, True = Guardar o no modificar
                 if ruta_archivo == None:
-                    ruta_archivo = filedialog.askopenfilename(initialdir = "/home/pedro",title = "Select file",filetypes = (("Archivos html","*.html"),("Archivos de estilo css", "*.css"),("Archivos de fuente js", "*.js"), ("Todos los archivos","*.*")))
-                if ruta_archivo != None  and ruta_archivo != "":
+                    ruta_archivo = filedialog.askopenfilename(initialdir="/home/pedro", title="Select file", filetypes=(
+                        ("Archivos html", "*.html"), ("Archivos de estilo css", "*.css"), ("Archivos de fuente js", "*.js"), ("Todos los archivos", "*.*")))
+                if ruta_archivo != None and ruta_archivo != "":
                     with open(ruta_archivo, encoding="utf-8") as f:
-                        fileContents = f.read()# Get all the text from file.           
+                        fileContents = f.read()  # Get all the text from file.
                     # Set current text to file contents
                     self.editor.delete(1.0, "end")
                     self.editor.insert(1.0, fileContents)
@@ -128,7 +116,7 @@ class Window():
                 else:
                     return
         except:
-            return                
+            return
 
     def guardar_archivo(self, event=None):
         if self.file_path == None:
@@ -139,7 +127,8 @@ class Window():
 
     def guardar_archivo_como(self, event=None, ruta_archivo=None):
         if ruta_archivo == None:
-            ruta_archivo = tk.filedialog.asksaveasfilename(initialdir='/home/pedro', filetypes=(('Archivos html', '*.html'), ('Archivos de estilo css', '*.css'), ('Archivos fuente', '*.js'), ('Todos los archivos', '*.*'))) #defaultextension='.txt'
+            ruta_archivo = tk.filedialog.asksaveasfilename(initialdir='/home/pedro', filetypes=(('Archivos html', '*.html'), (
+                'Archivos de estilo css', '*.css'), ('Archivos fuente', '*.js'), ('Todos los archivos', '*.*')))  # defaultextension='.txt'
         try:
             with open(ruta_archivo, 'wb') as f:
                 text = self.editor.get(1.0, "end-1c")
@@ -154,23 +143,51 @@ class Window():
 
     def file_quit(self, event=None):
         resultado = self.guardar_si_modifico()
-        if resultado != None: #None => Aborted or Save cancelled, False => Discarded, True = Saved or Not modified
-            self.root.destroy() #sys.exit(0)
+        if resultado != None:  # None => Aborted or Save cancelled, False => Discarded, True = Saved or Not modified
+            self.root.destroy()  # sys.exit(0)
 
-
-    #comandos basicos de ededion de texto
+    # comandos basicos de ededion de texto
     def undo(self, event=None):
         self.editor.edit_undo()
-        
+
     def redo(self, event=None):
-        self.editor.edit_redo()     
-    
-    #metodo para el analisis del archivo
+        self.editor.edit_redo()
+        
+    def reset(self, event=None):
+        self.editor.edit_reset()    
+
+    # metodo para el analisis del archivo
     def run_lex_analyzer(self, event=None):
-        #if self.file_path == None
+        # if self.file_path == None
         input_string = self.editor.get('1.0', 'end-1c')
         print(input_string)
-        pass
 
+    def highlighter(self, event):
+        # diccionario de palabras reservadas y color respectivo
+        highlightWords = {'if': 'green',
+                          'else': 'red',
+                          'while': 'blue',
+                          'true': 'red',
+                          'false': 'red',
+                          'var': '#3385ff',
+                          'find': 'orange',
+                          'self': 'yellow',
+                          '=' : '#ff751a',
+                          'function':'#ff751a',
+                          'this': '#00e600'
+                          }
 
-
+        '''the highlight function, called when a Key-press event occurs'''
+        for k, v in highlightWords.items():  # iterate over dict
+            startIndex = '1.0'
+            while True:
+                # search for occurence of k
+                startIndex = self.editor.search(k, startIndex, tk.END)
+                if startIndex:
+                    endIndex = self.editor.index(
+                        '%s+%dc' % (startIndex, (len(k))))  # find end of k
+                    self.editor.tag_add(k, startIndex, endIndex)  # add tag to k
+                    self.editor.tag_config(k, foreground=v)      # and color it with v
+                    startIndex = endIndex  # reset startIndex to continue searching
+                else:
+                    break
