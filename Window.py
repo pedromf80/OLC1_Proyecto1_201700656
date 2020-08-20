@@ -1,13 +1,16 @@
 import tkinter as tk
 from tkinter import scrolledtext, messagebox, filedialog
 import os
+from Lexicojs import Lexicojs
+from Lexicocss import Lexicocss
+from Lexicohtml  import Lexicohtml
+
 
 # clase ventana
 class Window():
     # constructor de la clase ventana para la app
     def __init__(self):
         self.file_path = None
-        self.lexfile = None
         self.root = tk.Tk()
         self.frame = tk.Frame()
         self.menu = tk.Menu(self.root)
@@ -20,7 +23,7 @@ class Window():
         self.root.title("ML WEB EDITOR")
         self.root.resizable(1, 1)
         self.root.config(menu=self.menu)
-        self.frame.pack(expand=1, fill=tk.BOTH)
+        self.frame.pack(ipadx=180, expand=1, fill=tk.BOTH)
         self.addTexbox()
         self.addConsole()
         self.initMenu()  # metodo que inicia todos los componentes del menu
@@ -113,6 +116,7 @@ class Window():
                     self.editor.insert(1.0, fileContents)
                     self.editor.edit_modified(False)
                     self.file_path = ruta_archivo
+                    self.highlighter(None)
                 else:
                     return
         except:
@@ -156,11 +160,20 @@ class Window():
     def reset(self, event=None):
         self.editor.edit_reset()    
 
-    # metodo para el analisis del archivo
+    # metodo para el analisis lexico dependiendo del tipo del archivo
     def run_lex_analyzer(self, event=None):
-        # if self.file_path == None
-        input_string = self.editor.get('1.0', 'end-1c')
-        print(input_string)
+        if self.file_path == None:
+            self.guardar_archivo(None)
+        else:    
+            input_string = self.editor.get('1.0', 'end-1c')
+            x, v = self.file_path.split(".")
+            if v == 'js':
+                Lexicojs(input_string)
+            if v == 'css':
+                Lexicocss(input_string)
+            if v == 'html':
+                Lexicohtml(input_string)
+            
 
     def highlighter(self, event):
         # diccionario de palabras reservadas y color respectivo
@@ -178,16 +191,17 @@ class Window():
                           }
 
         '''the highlight function, called when a Key-press event occurs'''
-        for k, v in highlightWords.items():  # iterate over dict
+        for k, v in highlightWords.items():  # iteramos el diccionario
             startIndex = '1.0'
             while True:
-                # search for occurence of k
+                # buscar concurrencia de k
                 startIndex = self.editor.search(k, startIndex, tk.END)
                 if startIndex:
-                    endIndex = self.editor.index(
-                        '%s+%dc' % (startIndex, (len(k))))  # find end of k
+                    endIndex = self.editor.index('%s+%dc' % (startIndex, (len(k))))  # find end of k
                     self.editor.tag_add(k, startIndex, endIndex)  # add tag to k
                     self.editor.tag_config(k, foreground=v)      # and color it with v
                     startIndex = endIndex  # reset startIndex to continue searching
                 else:
                     break
+
+        
