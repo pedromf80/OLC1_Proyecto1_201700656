@@ -1,0 +1,43 @@
+<mxfile host="cf6cf7b8-a4e4-4e3a-a134-788deebb81a4" modified="2020-08-20T04:25:37.762Z" agent="5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Code/1.48.0 Chrome/78.0.3904.130 Electron/7.3.2 Safari/537.36" etag="Mszm8RrOwzd7Cs6yOs6S" version="13.1.3">
+    <diagram id="6hGFLwfOUW9BJ-s0fimq" name="Page-1">
+        <mxGraphModel dx="642" dy="548" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+            <root>
+                <mxCell id="0"/>
+                <mxCell id="1" parent="0"/>
+                <mxCell id="6" value="Alfabeto JS" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+                    <mxGeometry x="340" width="110" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="8" value="C1 = comentario unilinea&amp;nbsp; [&lt;font color=&quot;#ff713d&quot;&gt;//CC\n&lt;/font&gt;] se termina con salto de linea" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+                    <mxGeometry x="10" y="90" width="470" height="20" as="geometry"/>
+                </mxCell>
+                <mxCell id="9" value="CM = comentario multilinea&amp;nbsp; [&lt;font color=&quot;#ff5719&quot;&gt;/*CC*/&lt;/font&gt;]&amp;nbsp;" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+                    <mxGeometry x="10" y="110" width="470" height="20" as="geometry"/>
+                </mxCell>
+                <mxCell id="10" value="PR = palabras reservadas (concanetacion de letras unicamente)" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;" vertex="1" parent="1">
+                    <mxGeometry x="10" y="140" width="360" height="20" as="geometry"/>
+                </mxCell>
+                <mxCell id="11" value="ID = Un letra de rimero y despues numeros o letras" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;" vertex="1" parent="1">
+                    <mxGeometry x="10" y="160" width="290" height="20" as="geometry"/>
+                </mxCell>
+                <mxCell id="12" value="&lt;table border=&quot;1&quot; width=&quot;100%&quot; style=&quot;width: 100% ; height: 100% ; border-collapse: collapse&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td align=&quot;center&quot;&gt;igual &lt;font color=&quot;#ff5a1f&quot;&gt;=&lt;/font&gt;&lt;br&gt;&lt;/td&gt;&lt;td align=&quot;center&quot;&gt;suma &lt;font color=&quot;#ff5521&quot;&gt;+&lt;/font&gt;&lt;/td&gt;&lt;td align=&quot;center&quot;&gt;&amp;nbsp;resta &lt;font color=&quot;#ff5112&quot;&gt;-&lt;/font&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;center&quot;&gt;(multiplicaion) astedisco&amp;nbsp;&lt;font color=&quot;#ff7c30&quot;&gt;*&lt;/font&gt;&lt;/td&gt;&lt;td align=&quot;center&quot;&gt;(division) diagonal&amp;nbsp;&lt;font color=&quot;#ff6524&quot;&gt;/&lt;/font&gt;&lt;/td&gt;&lt;td align=&quot;center&quot;&gt;parentesis izquierdo&lt;font color=&quot;#ff8921&quot;&gt; (&lt;/font&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;center&quot;&gt;parentesis derecho &lt;font color=&quot;#ff6e0d&quot;&gt;)&lt;/font&gt;&lt;/td&gt;&lt;td align=&quot;center&quot;&gt;llave izquierda &lt;font color=&quot;#ffaa2b&quot;&gt;{&lt;/font&gt;&lt;/td&gt;&lt;td align=&quot;center&quot;&gt;llave derecha &lt;font color=&quot;#ffa742&quot;&gt;}&lt;/font&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;punto&amp;nbsp; y coma &lt;font color=&quot;#ff491c&quot;&gt;;&lt;/font&gt;&lt;/td&gt;&lt;td&gt;punto &lt;font color=&quot;#ff6a14&quot;&gt;.&lt;/font&gt;&lt;/td&gt;&lt;td&gt;&lt;br&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;br&gt;&lt;/td&gt;&lt;td&gt;&lt;br&gt;&lt;/td&gt;&lt;td&gt;&lt;br&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;br&gt;&lt;/td&gt;&lt;td&gt;&lt;br&gt;&lt;/td&gt;&lt;td&gt;&lt;br&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;" style="text;html=1;strokeColor=none;fillColor=none;overflow=fill;" vertex="1" parent="1">
+                    <mxGeometry x="10" y="240" width="380" height="190" as="geometry"/>
+                </mxCell>
+                <mxCell id="13" value="Simbolos" style="text;strokeColor=none;fillColor=none;html=1;fontSize=16;fontStyle=0;verticalAlign=middle;align=center;" vertex="1" parent="1">
+                    <mxGeometry x="170" y="210" width="90" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="15" value="CD = Cadena &quot;puede vernir cualquier cosa&quot;" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;" vertex="1" parent="1">
+                    <mxGeometry x="10" y="180" width="250" height="20" as="geometry"/>
+                </mxCell>
+                <mxCell id="18" value="D = Digitos [0-9]" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;" vertex="1" parent="1">
+                    <mxGeometry x="10" y="30" width="100" height="20" as="geometry"/>
+                </mxCell>
+                <mxCell id="20" value="L = Letras [A-Za-z]" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;" vertex="1" parent="1">
+                    <mxGeometry x="10" y="50" width="120" height="20" as="geometry"/>
+                </mxCell>
+                <mxCell id="21" value="CC = Cualquier cosa" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;" vertex="1" parent="1">
+                    <mxGeometry x="10" y="70" width="130" height="20" as="geometry"/>
+                </mxCell>
+            </root>
+        </mxGraphModel>
+    </diagram>
+</mxfile>
