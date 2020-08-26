@@ -1,7 +1,5 @@
 from Tokenjs import Tipo, Token
 
-
-
 class Lexicojs():   
     def __init__(self, text):
         self.listToken = []
@@ -13,19 +11,25 @@ class Lexicojs():
         self.lexema = ""
         self.estado=0
         ls = list(text)
-        for c in ls:
+        count = 0
+        while (count < ls.__len__()):
             self.yycolum +=1
+            c = ls[count]
+            print(c)
             if self.estado==0: #caso para la transicion de estados
                 #print('estado 0')
                 if c.isalpha():
-                   self.estado =1
+                    
+                    pass
+                   #self.estado =1
                 elif c.isdigit():
-                    self.estado=2
+                    pass
+                    #self.estado=2
                 elif c =='\"':
                     self.lexema = self.lexema+c
                     self.__addToken(Tipo.DIGITO)
-                    self.estado=3
-                    break;       
+                   # self.estado=3
+                       
                 elif c == '\n':
                     self.xxrow +=1
                     #print('line %s' %(xxrow))
@@ -34,16 +38,19 @@ class Lexicojs():
                    
             elif self.estado ==1:
                 #print('estado 1')
-                self.estado=0
-                
+                #self.estado=0
+                pass
 
             elif self.estado == 2:
                 #print('estado 2')
-                self.estado=0        
-            
+                #self.estado=0        
+                pass
+
             elif self.estado == 3:
-                print('estado 3')
-                self.estado=0
+                #print('estado 3')
+                #self.estado=0
+                pass
+            count += 1
 
     #metodo privado para agregar a la lista los tokens encontrados
     def __addToken(self, Tipo):
