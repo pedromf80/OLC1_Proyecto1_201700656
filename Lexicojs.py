@@ -6,31 +6,35 @@ class Lexicojs():
         self.lexer_analyzer(self.text)
 
     def lexer_analyzer(self, text):
-        self.yycolum =0
-        self.xxrow = 0
+        yycolum =0
+        xxrow = 0
         self.lexema = ""
+        n=0
         ls = list(text)
         for c in ls:
-            n += 1
-            print(n) 
-            #self.switch(n)
+            yycolum +=1
+            if n==0: #caso para la transicion de estados
+                #print('estado 0')
+                if c.isalpha():
+                   n =1
+                elif c.isdigit():
+                    n=2
+                elif c =='\"':
+                    n=3       
+                elif c == '\n':
+                   # xxrow +=1
+                   # print('line %s' %(xxrow))
+                   # print('column %s' %(yycolum))
+                   # yycolum =0
+                   pass
+            elif n ==1:
+                #print('estado 1')
+                n=0
+
+            elif n == 2:
+                #print('estado 2')
+                n=0        
             
-    def switch(self, case):
-        switcher={
-            0: self.state0()
-
-        }
-        return switcher.get(case, "estado Error")
-
-    #validar un palabra de pura letras
-    def state0(self):
-        print("estado 0\n")
-
-            
-
-
-        
-
-
-
-        
+            elif n == 3:
+                print('estado 3')
+                n=0
