@@ -1,40 +1,56 @@
+from Tokenjs import Tipo, Token
 
-class Lexicojs():
-    
+
+
+class Lexicojs():   
     def __init__(self, text):
-        self.text = text
-        self.lexer_analyzer(self.text)
-
+        self.listToken = []
+        self.lexer_analyzer(text)
+               
     def lexer_analyzer(self, text):
-        yycolum =0
-        xxrow = 0
+        self.yycolum =0
+        self.xxrow = 0
         self.lexema = ""
-        n=0
+        self.estado=0
         ls = list(text)
         for c in ls:
-            yycolum +=1
-            if n==0: #caso para la transicion de estados
+            self.yycolum +=1
+            if self.estado==0: #caso para la transicion de estados
                 #print('estado 0')
                 if c.isalpha():
-                   n =1
+                   self.estado =1
                 elif c.isdigit():
-                    n=2
+                    self.estado=2
                 elif c =='\"':
-                    n=3       
+                    self.lexema = self.lexema+c
+                    self.__addToken(Tipo.DIGITO)
+                    self.estado=3
+                    break;       
                 elif c == '\n':
-                   # xxrow +=1
-                   # print('line %s' %(xxrow))
-                   # print('column %s' %(yycolum))
-                   # yycolum =0
-                   pass
-            elif n ==1:
+                    self.xxrow +=1
+                    #print('line %s' %(xxrow))
+                    #print('column %s' %(yycolum))
+                    self.yycolum =0
+                   
+            elif self.estado ==1:
                 #print('estado 1')
-                n=0
+                self.estado=0
+                
 
-            elif n == 2:
+            elif self.estado == 2:
                 #print('estado 2')
-                n=0        
+                self.estado=0        
             
-            elif n == 3:
+            elif self.estado == 3:
                 print('estado 3')
-                n=0
+                self.estado=0
+
+    #metodo privado para agregar a la lista los tokens encontrados
+    def __addToken(self, Tipo):
+        self.listToken.append(Token(Tipo, self.lexema, self.xxrow, self.yycolum))           
+        self.estado=0
+        self.lexema=''
+
+    #retorna la lista de tokens
+    def getListToken(self):
+        return self.listToken

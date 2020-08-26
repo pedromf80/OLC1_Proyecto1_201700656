@@ -5,7 +5,13 @@ import os
 class Init():
     def __init__(self):
         from Lexicojs import Lexicojs
-        Lexicojs(self.readF())
+        a = Lexicojs(self.readF())
+        lstoken = a.getListToken()
+        for token in lstoken:
+            print(token.tipoToken.value)
+            print(token.lexema)
+            print(token.columna)
+            print(token.fila)
         #pass
         #ventana = Window()
 
