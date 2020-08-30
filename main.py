@@ -19,8 +19,6 @@ class Init():
         with open('/home/pedro/Desktop/TestCompi/fuente.js') as f:
              filecontent = f.read()
         return filecontent    
-
-       
         
 #el metodo main para inciar el programa
 if __name__ == "__main__":
