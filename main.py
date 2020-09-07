@@ -13,10 +13,10 @@ class Init():
             print(token.columna)
             print(token.fila)
         #pass
-        ventana = Window()
+        #ventana = Window()
 
     def readF(self):
-        with open('/home/pedro/Desktop/TestCompi/fuente.js') as f:
+        with open('/home/pedro/Desktop/TestCompi/ejemplo.js') as f:
              filecontent = f.read()
         return filecontent    
         

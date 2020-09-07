@@ -177,17 +177,17 @@ class Window():
 
     def highlighter(self, event):
         # diccionario de palabras reservadas y color respectivo
-        highlightWords = {'if': 'green',
+        highlightWords = {'if': 'red',
                           'else': 'red',
-                          'while': 'blue',
+                          'while': 'red',
                           'true': 'red',
                           'false': 'red',
-                          'var': '#3385ff',
-                          'find': 'orange',
-                          'self': 'yellow',
+                          'var': 'red',
+                          'find': 'red',
+                          'self': 'red',
                           '=' : '#ff751a',
-                          'function':'#ff751a',
-                          'this': '#00e600'
+                          'function':'red',
+                          'this': 'red'
                           }
 
         '''the highlight function, called when a Key-press event occurs'''
