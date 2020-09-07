@@ -13,7 +13,7 @@ class Init():
             print("Lexema: "+token.lexema)
             print("Columna: "+str(token.columna))
             print("Fila: "+str(token.fila))
-            print('\n')
+           # print('\n')
         #pass 
         #ventana = Window()
 

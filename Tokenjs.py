@@ -17,6 +17,7 @@ class Tipo(Enum):
     FUNCTION = 'Palabra Reservada'
     CONSTRUCTOR = 'Palabra Reservada'
     CLASS = 'Palabra Reservada'
+    NEW = 'Palabra Reservada'
     CONJUNCION = 'Conjuncion'
     DISYUNCION = 'Disyuncion'
     NEGACION = 'Negacion'
