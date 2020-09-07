@@ -8,11 +8,13 @@ class Init():
         a = Lexicojs(self.readF())
         lstoken = a.getListToken()
         for token in lstoken:
-            print(token.tipoToken.value)
-            print(token.lexema)
-            print(token.columna)
-            print(token.fila)
-        #pass
+           #pass
+            print("Tipo token: "+token.tipoToken.value)
+            print("Lexema: "+token.lexema)
+            print("Columna: "+str(token.columna))
+            print("Fila: "+str(token.fila))
+            print('\n')
+        #pass 
         #ventana = Window()
 
     def readF(self):

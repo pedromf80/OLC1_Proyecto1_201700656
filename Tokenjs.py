@@ -2,7 +2,8 @@
 from enum import Enum
 
 class Tipo(Enum):
-    COMENTARIO = 'comentario'
+    COMENTARIO_U = 'Comentario Unilinea'
+    COMENTARIO_M = 'Comentario Multilinea'
     ID = 'ID'
     VAR = 'Palabra Reservada'
     IF = 'Palabra Reservada'

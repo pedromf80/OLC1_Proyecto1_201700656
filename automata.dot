@@ -10,7 +10,7 @@ digraph finite_state_machine {
 	1 -> 4 [ label = "*" ];
 	4 -> 4 [ label = "CC" ];
 	4 -> 5 [ label = "*" ];
-	5 -> 4 [ label = "*" ];
+	5 -> 4 [ label = "CC" ];
 	5 -> 3 [ label = "/" ];
 	0 -> 6 [ label = "L" ];
 	6 -> 7 [ label = "L | D | _" ];
@@ -23,5 +23,5 @@ digraph finite_state_machine {
 	10 -> 11 [label = "."];
 	11 -> 12 [label = "D"];
 	12 -> 12 [label = "D"];
-	0 -> 13 [label = "= | + | "];
+	0 -> 13 [label = "SB"];
 }
