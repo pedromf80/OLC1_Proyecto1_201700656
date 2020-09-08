@@ -18,6 +18,7 @@ class Tipo(Enum):
     CONSTRUCTOR = 'Palabra Reservada'
     CLASS = 'Palabra Reservada'
     NEW = 'Palabra Reservada'
+    NULL = 'Palabra Reservada'
     CONJUNCION = 'Conjuncion'
     DISYUNCION = 'Disyuncion'
     NEGACION = 'Negacion'
@@ -34,9 +35,12 @@ class Tipo(Enum):
     CORCHETE_IZ = 'Corchete Izquierdo'
     CORCHETE_DE = 'Corchete Derecho'
     DIGITO= 'Digito'
+    COMA = 'Coma'
     PUNTO='Punto'
     PUNTO_COMA='Punto y coma'
     CADENA='Cadena'
+    IGUAL = 'Signo Igual'
+    GUION_BAJO = 'Gion Bajo'
     ERROR = 'Error caracter Desconocido'
 
 class Token():

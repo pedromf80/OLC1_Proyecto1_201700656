@@ -22,25 +22,128 @@ class Lexicojs():
                     self.lexema += c
                     self.estado = 6
                     continue
-                   #self.estado =10
+                  
                 if c.isdigit():
-                    pass
-                    '''self.estado = 10
-                    count -= 1
-                    '''
+                    self.lexema += c
+                    self.estado = 9
+                    continue
+
                 if c == '/':
                     self.lexema += c
                     self.estado = 1
                     continue
+
                 if c == '\"':
-                    pass
-                    #self.lexema = self.lexema+c
-                    # self.__addToken(Tipo.DIGITO)
-                   # self.estado=3
+                    self.lexema += c
+                    self.estado = 7
+                    continue
+
+                if c == '\'':
+                    self.lexema += c
+                    self.estado = 13
+                    continue
+
+                # recononocimiento de simbolos SB
+                if c == '=':
+                    self.estado = 12
+                    count -= 1
+                    continue
+
+                if c == '+':
+                    self.estado = 12
+                    count -= 1
+                    continue
+
+                if c == '-':
+                    self.estado = 12
+                    count -= 1
+                    continue
+
+                if c == '*':
+                    self.estado = 12
+                    count -= 1
+                    continue
+
+                if c == '(':
+                    self.estado = 12
+                    count -= 1
+                    continue
+
+                if c == ')':
+                    self.estado = 12
+                    count -= 1
+                    continue
+
+                if c == '{':
+                    self.estado = 12
+                    count -= 1
+                    continue
+                if c == '}':
+                    self.estado = 12
+                    count -= 1
+                    continue
+
+                if c == '[':
+                    self.estado = 12
+                    count -= 1
+                    continue
+
+                if c == ']':
+                    self.estado = 12
+                    count -= 1
+                    continue
+
+                if c == ';':
+                    self.estado = 12
+                    count -= 1
+                    continue
+
+                if c == '.':
+                    self.estado = 12
+                    count -= 1
+                    continue
+
+                if c == '_':
+                    self.estado = 12
+                    count -= 1
+                    continue
+
+                if c == ',':
+                    self.estado = 12
+                    count -= 1
+                    continue
+
+                if c == '>':
+                    self.estado = 12
+                    count -= 1
+                    continue
+
+                if c == '<':
+                    self.estado = 12
+                    count -= 1
+                    continue
+
+                if c == ']':
+                    self.estado = 12
+                    count -= 1
+                    continue
+
+                if c == ']':
+                    self.estado = 12
+                    count -= 1
+                    continue
 
                 if c == '\n':
                     self.xxrow += 1
                     self.yycolum = 0
+                    continue
+
+                if c == '\t' or '\r' or ' ':
+                    continue
+
+                else:
+                    self.lexema += c
+                    self.__addToken(Tipo.ERROR)
                     continue
 
             # estado uno del automata reconocimiento de comentarios
@@ -54,7 +157,8 @@ class Lexicojs():
                     self.estado = 4
                     continue
                 else:
-                    self.__addToken(Tipo.ERROR)
+                    self.estado = 12
+                    count -= 1
                     continue
 
             if self.estado == 2:
@@ -66,7 +170,6 @@ class Lexicojs():
                     self.lexema += c
 
             if self.estado == 3:
-
                 if c == '\n':
                     self.__addToken(Tipo.COMENTARIO_U)
                     self.yycolum = 0
@@ -145,8 +248,41 @@ class Lexicojs():
                 elif self.lexema == 'new':
                     self.__addToken(Tipo.NEW)
                     continue
+                elif self.lexema == 'null':
+                    self.__addToken(Tipo.NULL)
+                    continue
                 else:
                     self.__addToken(Tipo.ID)
+                    count -= 1
+                    continue
+
+            # patron para el reconocimiento de cadenas con comillas dobles
+            if self.estado == 7:
+                if c == '"':
+                    self.lexema += c
+                    self.estado = 8
+                    count -= 1
+                    continue
+                else:
+                    self.lexema += c
+                    continue
+
+            # estado de aceptacion de cadenas
+            if self.estado == 8:
+                self.__addToken(Tipo.CADENA)
+                continue
+
+            # estado reconocimiento de digitos enteros y flotantes
+            if self.estado == 9:
+                if c.isdigit():
+                    self.lexema += c
+                    continue
+                elif c == '.':
+                    self.lexema += c
+                    self.estado = 10
+                    continue
+                elif self.__SB(c):
+                    self.__addToken(Tipo.DIGITO)
                     count -= 1
                     continue
 
@@ -154,20 +290,112 @@ class Lexicojs():
             if self.estado == 10:
                 if c.isdigit():
                     self.lexema += c
-                elif c == '.':
-                    self.lexema += c
                     self.estado = 11
-                elif c == ' ' or c == ';':
-                    count -= 1
-                    self.__addToken(Tipo.DIGITO)
+                    continue
 
             if self.estado == 11:
                 if c.isdigit():
                     self.lexema += c
-                elif c == ' ':
+                    continue
+                elif self.__SB(c):
                     self.__addToken(Tipo.DIGITO)
+                    continue
+
             if self.estado == 13:
-                pass
+                if c == '\'':
+                    self.lexema += c
+                    self.estado = 8
+                    count -= 1
+                    continue
+                else:
+                    self.lexema += c
+                    continue
+
+            if self.estado == 12:
+                # recononocimiento de simbolos SB
+                if c == '=':
+                    self.lexema += c
+                    self.__addToken(Tipo.IGUAL)
+                    continue
+
+                if c == '+':
+                    self.lexema += c
+                    self.__addToken(Tipo.MAS)
+                    continue
+
+                if c == '-':
+                    self.lexema += c
+                    self.__addToken(Tipo.MENOS)
+                    continue
+
+                if c == '*':
+                    self.lexema += c
+                    self.__addToken(Tipo.ASTERISCO)
+                    continue
+
+                if c == '/':
+                    self.__addToken(Tipo.DIAGONAL)
+                    continue
+
+                if c == '(':
+                    self.lexema +=c
+                    self.__addToken(Tipo.PARRENTESIS_IZ)
+                    continue
+
+                if c == ')':
+                    self.lexema +=c
+                    self.__addToken(Tipo.PARRENTESIS_DE)
+                    continue
+
+                if c == '{':
+                    self.lexema +=c
+                    self.__addToken(Tipo.LLAVE_IZ)
+                    continue
+
+                if c == '}':
+                    self.lexema +=c
+                    self.__addToken(Tipo.LLAVE_DE)
+                    continue
+
+                if c == '[':
+                    self.lexema +=c
+                    self.__addToken(Tipo.CORCHETE_IZ)
+                    continue
+
+                if c == ']':
+                    self.lexema +=c
+                    self.__addToken(Tipo.CORCHETE_DE)
+                    continue
+
+                if c == ';':
+                    self.lexema +=c
+                    self.__addToken(Tipo.PUNTO_COMA)
+                    continue
+
+                if c == '.':
+                    self.lexema +=c
+                    self.__addToken(Tipo.PUNTO)
+                    continue
+
+                if c == '_':
+                    self.lexema +=c
+                    self.__addToken(Tipo.GUION_BAJO)
+                    continue
+
+                if c == ',':
+                    self.lexema +=c
+                    self.__addToken(Tipo.COMA)
+                    continue
+
+                if c == '>':
+                    self.lexema+=c
+                    self.__addToken(Tipo.MAYOR_QUE)
+                    continue
+                
+                if c == '<':
+                    self.lexema +=c
+                    self.__addToken(Tipo.MENOR_QUE)
+                    continue
 
     # diccionario de simbolos aceptados en el lenguaje
     def __SB(self, symbol):
@@ -175,6 +403,9 @@ class Lexicojs():
             '.': True,
             '(': True,
             '{': True,
+            ',': True,
+            ';': True,
+            ' ': True,
         }
         return sb.get(symbol, False)
 
