@@ -4,7 +4,9 @@ from Tokenjs import Tipo, Token
 class Lexicojs():
     def __init__(self, text):
         self.listToken = []
+        self.outcodejs = ""
         self.lexer_analyzer(text)
+        
 
     def lexer_analyzer(self, text):
         self.yycolum = 0
@@ -20,26 +22,31 @@ class Lexicojs():
             if self.estado == 0:  # caso para la transicion de estados
                 if c.isalpha():
                     self.lexema += c
+                    self.outcodejs += c
                     self.estado = 6
                     continue
-                  
+
                 elif c.isdigit():
                     self.lexema += c
+                    self.outcodejs += c
                     self.estado = 9
                     continue
 
                 elif c == '/':
                     self.lexema += c
+                    self.outcodejs += c
                     self.estado = 1
                     continue
 
                 elif c == '\"':
                     self.lexema += c
+                    self.outcodejs += c
                     self.estado = 7
                     continue
 
                 elif c == '\'':
                     self.lexema += c
+                    self.outcodejs += c
                     self.estado = 13
                     continue
 
@@ -144,19 +151,23 @@ class Lexicojs():
                     continue
 
                 elif c == '\n':
+                    self.outcodejs += c
                     self.xxrow += 1
                     self.yycolum = 0
                     continue
 
                 elif c == ' ':
+                    self.outcodejs += c
                     continue
 
                 elif c == '\t':
+                    self.outcodejs += c
                     continue
 
                 elif c == '\r':
+                    self.outcodejs += c
                     continue
-                    
+
                 else:
                     self.lexema += c
                     self.__addToken(Tipo.ERROR)
@@ -166,10 +177,12 @@ class Lexicojs():
             if self.estado == 1:
                 if c == '/':
                     self.lexema += c
+                    self.outcodejs += c
                     self.estado = 2
                     continue
                 elif c == '*':
                     self.lexema += c
+                    self.outcodejs += c
                     self.estado = 4
                     continue
                 else:
@@ -183,10 +196,12 @@ class Lexicojs():
                     continue
                 else:
                     self.lexema += c
+                    self.outcodejs += c
                     continue
 
             if self.estado == 3:
                 if c == '\n':
+                    self.outcodejs += c
                     self.__addToken(Tipo.COMENTARIO_U)
                     self.yycolum = 0
                     self.xxrow += 1
@@ -200,18 +215,22 @@ class Lexicojs():
             if self.estado == 4:
                 if c == '*':
                     self.lexema += c
+                    self.outcodejs += c
                     self.estado = 5
                     continue
                 else:
                     if c == '\n':
+                        #self.outcodejs += c
                         self.xxrow += 1
                         self.yycolum = 0
                     self.lexema += c
+                    self.outcodejs += c
                     continue
 
             if self.estado == 5:
                 if c == '/':
                     self.lexema += c
+                    self.outcodejs += c
                     self.estado = 3
                     count -= 1
                     continue
@@ -224,68 +243,71 @@ class Lexicojs():
             if self.estado == 6:
                 if c.isalpha():
                     self.lexema += c
+                    self.outcodejs += c
                     continue
                 elif c.isdigit():
                     self.lexema += c
+                    self.outcodejs += c
                     continue
                 elif c == '_':
                     self.lexema += c
+                    self.outcodejs += c
                     continue
                 elif self.lexema == 'var':
                     self.__addToken(Tipo.VAR)
-                    count -=1
+                    count -= 1
                     continue
                 elif self.lexema == 'if':
                     self.__addToken(Tipo.IF)
-                    count -=1
+                    count -= 1
                     continue
                 elif self.lexema == 'else':
                     self.__addToken(Tipo.ELSE)
-                    count -=1
+                    count -= 1
                     continue
                 elif self.lexema == 'for':
                     self.__addToken(Tipo.FOR)
-                    count -=1
+                    count -= 1
                     continue
                 elif self.lexema == 'while':
                     self.__addToken(Tipo.WHILE)
-                    count -=1
+                    count -= 1
                     continue
                 elif self.lexema == 'do':
                     self.__addToken(Tipo.DO)
-                    count -=1
+                    count -= 1
                     continue
                 elif self.lexema == 'continue':
                     self.__addToken(Tipo.CONTINUE)
-                    count -=1
+                    count -= 1
                     continue
                 elif self.lexema == 'break':
                     self.__addToken(Tipo.BREAK)
-                    count -=1
+                    count -= 1
                     continue
                 elif self.lexema == 'return':
                     self.__addToken(Tipo.RETURN)
-                    count -=1
+                    count -= 1
                     continue
                 elif self.lexema == 'function':
                     self.__addToken(Tipo.FUNCTION)
-                    count -=1
+                    count -= 1
                     continue
                 elif self.lexema == 'constructor':
                     self.__addToken(Tipo.CONSTRUCTOR)
-                    count -=1
+                    count -= 1
                     continue
                 elif self.lexema == 'class':
                     self.__addToken(Tipo.CLASS)
-                    count -=1
+                    count -= 1
                     continue
                 elif self.lexema == 'new':
                     self.__addToken(Tipo.NEW)
-                    count -=1
+                    count -= 1
                     continue
                 elif self.lexema == 'null':
                     self.__addToken(Tipo.NULL)
-                    count -=1
+                    count -= 1
                     continue
                 else:
                     self.__addToken(Tipo.ID)
@@ -296,11 +318,13 @@ class Lexicojs():
             if self.estado == 7:
                 if c == '"':
                     self.lexema += c
+                    self.outcodejs += c
                     self.estado = 8
                     count -= 1
                     continue
                 else:
                     self.lexema += c
+                    self.outcodejs += c
                     continue
 
             # estado de aceptacion de cadenas
@@ -312,9 +336,11 @@ class Lexicojs():
             if self.estado == 9:
                 if c.isdigit():
                     self.lexema += c
+                    self.outcodejs += c
                     continue
                 elif c == '.':
                     self.lexema += c
+                    self.outcodejs += c
                     self.estado = 10
                     continue
                 elif self.__SB(c):
@@ -326,117 +352,138 @@ class Lexicojs():
             if self.estado == 10:
                 if c.isdigit():
                     self.lexema += c
+                    self.outcodejs += c
                     self.estado = 11
                     continue
 
             if self.estado == 11:
                 if c.isdigit():
                     self.lexema += c
+                    self.outcodejs += c
                     continue
                 elif self.__SB(c):
                     self.__addToken(Tipo.DIGITO)
                     continue
 
-
             if self.estado == 13:
                 if c == '\'':
                     self.lexema += c
+                    self.outcodejs += c
                     self.estado = 8
                     count -= 1
                     continue
                 else:
                     self.lexema += c
+                    self.outcodejs += c
                     continue
 
             if self.estado == 12:
                 # recononocimiento de simbolos SB
                 if c == '=':
                     self.lexema += c
+                    self.outcodejs += c
                     self.__addToken(Tipo.IGUAL)
                     continue
 
                 if c == '+':
                     self.lexema += c
+                    self.outcodejs += c
                     self.__addToken(Tipo.MAS)
                     continue
 
                 if c == '-':
                     self.lexema += c
+                    self.outcodejs += c
                     self.__addToken(Tipo.MENOS)
                     continue
 
                 if c == '*':
                     self.lexema += c
+                    self.outcodejs += c
                     self.__addToken(Tipo.ASTERISCO)
                     continue
 
                 if c == '(':
-                    self.lexema +=c
+                    self.lexema += c
+                    self.outcodejs += c
                     self.__addToken(Tipo.PARRENTESIS_IZ)
                     continue
 
                 if c == ')':
-                    self.lexema +=c
+                    self.lexema += c
+                    self.outcodejs += c
                     self.__addToken(Tipo.PARRENTESIS_DE)
                     continue
 
                 if c == '{':
-                    self.lexema +=c
+                    self.lexema += c
+                    self.outcodejs += c
                     self.__addToken(Tipo.LLAVE_IZ)
                     continue
 
                 if c == '}':
-                    self.lexema +=c
+                    self.lexema += c
+                    self.outcodejs += c
                     self.__addToken(Tipo.LLAVE_DE)
                     continue
 
                 if c == '[':
-                    self.lexema +=c
+                    self.lexema += c
+                    self.outcodejs += c
                     self.__addToken(Tipo.CORCHETE_IZ)
                     continue
 
                 if c == ']':
-                    self.lexema +=c
+                    self.lexema += c
+                    self.outcodejs += c
                     self.__addToken(Tipo.CORCHETE_DE)
                     continue
 
                 if c == ';':
-                    self.lexema +=c
+                    self.lexema += c
+                    self.outcodejs += c
                     self.__addToken(Tipo.PUNTO_COMA)
                     continue
 
                 if c == '.':
-                    self.lexema +=c
+                    self.lexema += c
+                    self.outcodejs += c
                     self.__addToken(Tipo.PUNTO)
                     continue
 
                 if c == '_':
-                    self.lexema +=c
+                    self.lexema += c
+                    self.outcodejs += c
                     self.__addToken(Tipo.GUION_BAJO)
                     continue
 
                 if c == ',':
-                    self.lexema +=c
+                    self.lexema += c
+                    self.outcodejs += c
                     self.__addToken(Tipo.COMA)
                     continue
 
                 if c == '>':
-                    self.lexema+=c
+                    self.lexema += c
+                    self.outcodejs += c
                     self.__addToken(Tipo.MAYOR_QUE)
                     continue
-                
+
                 if c == '<':
-                    self.lexema +=c
+                    self.lexema += c
+                    self.outcodejs += c
                     self.__addToken(Tipo.MENOR_QUE)
                     continue
 
                 if c == ':':
-                    self.lexema +=c
+                    self.lexema += c
+                    self.outcodejs += c
                     self.__addToken(Tipo.DOS_PUNTOS)
                     continue
 
                 elif c == ':':
-                    self.lexema +=c
+                    self.lexema += c
+                    self.outcodejs += c
                     self.__addToken(Tipo.NEGACION)
                     continue
 
@@ -453,7 +500,6 @@ class Lexicojs():
         return sb.get(symbol, False)
 
     # metodo privado para agregar a la lista los tokens encontrados
-
     def __addToken(self, Tipo):
         self.listToken.append(
             Token(Tipo, self.lexema, self.xxrow, self.yycolum))
@@ -463,3 +509,7 @@ class Lexicojs():
     # retorna la lista de tokens
     def getListToken(self):
         return self.listToken
+
+    #retorna el string codigo limpio
+    def getSourceClean(self):
+        return self.outcodejs    
