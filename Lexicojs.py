@@ -23,124 +23,140 @@ class Lexicojs():
                     self.estado = 6
                     continue
                   
-                if c.isdigit():
+                elif c.isdigit():
                     self.lexema += c
                     self.estado = 9
                     continue
 
-                if c == '/':
+                elif c == '/':
                     self.lexema += c
                     self.estado = 1
                     continue
 
-                if c == '\"':
+                elif c == '\"':
                     self.lexema += c
                     self.estado = 7
                     continue
 
-                if c == '\'':
+                elif c == '\'':
                     self.lexema += c
                     self.estado = 13
                     continue
 
                 # recononocimiento de simbolos SB
-                if c == '=':
+                elif c == '=':
                     self.estado = 12
                     count -= 1
                     continue
 
-                if c == '+':
+                elif c == '+':
                     self.estado = 12
                     count -= 1
                     continue
 
-                if c == '-':
+                elif c == '-':
                     self.estado = 12
                     count -= 1
                     continue
 
-                if c == '*':
+                elif c == '*':
                     self.estado = 12
                     count -= 1
                     continue
 
-                if c == '(':
+                elif c == '(':
                     self.estado = 12
                     count -= 1
                     continue
 
-                if c == ')':
+                elif c == ')':
                     self.estado = 12
                     count -= 1
                     continue
 
-                if c == '{':
+                elif c == '{':
                     self.estado = 12
                     count -= 1
                     continue
-                if c == '}':
-                    self.estado = 12
-                    count -= 1
-                    continue
-
-                if c == '[':
+                elif c == '}':
                     self.estado = 12
                     count -= 1
                     continue
 
-                if c == ']':
+                elif c == '[':
                     self.estado = 12
                     count -= 1
                     continue
 
-                if c == ';':
+                elif c == ']':
                     self.estado = 12
                     count -= 1
                     continue
 
-                if c == '.':
+                elif c == ';':
                     self.estado = 12
                     count -= 1
                     continue
 
-                if c == '_':
+                elif c == '.':
                     self.estado = 12
                     count -= 1
                     continue
 
-                if c == ',':
+                elif c == '_':
                     self.estado = 12
                     count -= 1
                     continue
 
-                if c == '>':
+                elif c == ',':
                     self.estado = 12
                     count -= 1
                     continue
 
-                if c == '<':
+                elif c == '>':
                     self.estado = 12
                     count -= 1
                     continue
 
-                if c == ']':
+                elif c == '<':
                     self.estado = 12
                     count -= 1
                     continue
 
-                if c == ']':
+                elif c == ']':
                     self.estado = 12
                     count -= 1
                     continue
 
-                if c == '\n':
+                elif c == ']':
+                    self.estado = 12
+                    count -= 1
+                    continue
+
+                elif c == ':':
+                    self.estado = 12
+                    count -= 1
+                    continue
+
+                elif c == '!':
+                    self.estado = 12
+                    count -= 1
+                    continue
+
+                elif c == '\n':
                     self.xxrow += 1
                     self.yycolum = 0
                     continue
 
-                if c == '\t' or '\r' or ' ':
+                elif c == ' ':
                     continue
 
+                elif c == '\t':
+                    continue
+
+                elif c == '\r':
+                    continue
+                    
                 else:
                     self.lexema += c
                     self.__addToken(Tipo.ERROR)
@@ -157,8 +173,7 @@ class Lexicojs():
                     self.estado = 4
                     continue
                 else:
-                    self.estado = 12
-                    count -= 1
+                    self.__addToken(Tipo.DIAGONAL)
                     continue
 
             if self.estado == 2:
@@ -168,6 +183,7 @@ class Lexicojs():
                     continue
                 else:
                     self.lexema += c
+                    continue
 
             if self.estado == 3:
                 if c == '\n':
@@ -177,6 +193,8 @@ class Lexicojs():
                     continue
                 if c == '/':
                     self.__addToken(Tipo.COMENTARIO_M)
+                    continue
+                else:
                     continue
 
             if self.estado == 4:
@@ -189,6 +207,7 @@ class Lexicojs():
                         self.xxrow += 1
                         self.yycolum = 0
                     self.lexema += c
+                    continue
 
             if self.estado == 5:
                 if c == '/':
@@ -205,51 +224,68 @@ class Lexicojs():
             if self.estado == 6:
                 if c.isalpha():
                     self.lexema += c
+                    continue
                 elif c.isdigit():
                     self.lexema += c
+                    continue
                 elif c == '_':
                     self.lexema += c
+                    continue
                 elif self.lexema == 'var':
                     self.__addToken(Tipo.VAR)
+                    count -=1
                     continue
                 elif self.lexema == 'if':
                     self.__addToken(Tipo.IF)
+                    count -=1
                     continue
                 elif self.lexema == 'else':
                     self.__addToken(Tipo.ELSE)
+                    count -=1
                     continue
                 elif self.lexema == 'for':
                     self.__addToken(Tipo.FOR)
+                    count -=1
                     continue
                 elif self.lexema == 'while':
                     self.__addToken(Tipo.WHILE)
+                    count -=1
                     continue
                 elif self.lexema == 'do':
                     self.__addToken(Tipo.DO)
+                    count -=1
                     continue
                 elif self.lexema == 'continue':
                     self.__addToken(Tipo.CONTINUE)
+                    count -=1
                     continue
                 elif self.lexema == 'break':
                     self.__addToken(Tipo.BREAK)
+                    count -=1
                     continue
                 elif self.lexema == 'return':
                     self.__addToken(Tipo.RETURN)
+                    count -=1
                     continue
                 elif self.lexema == 'function':
                     self.__addToken(Tipo.FUNCTION)
+                    count -=1
                     continue
                 elif self.lexema == 'constructor':
                     self.__addToken(Tipo.CONSTRUCTOR)
+                    count -=1
                     continue
                 elif self.lexema == 'class':
                     self.__addToken(Tipo.CLASS)
+                    count -=1
                     continue
                 elif self.lexema == 'new':
                     self.__addToken(Tipo.NEW)
+                    count -=1
                     continue
                 elif self.lexema == 'null':
                     self.__addToken(Tipo.NULL)
+                    count -=1
                     continue
                 else:
                     self.__addToken(Tipo.ID)
@@ -301,6 +337,7 @@ class Lexicojs():
                     self.__addToken(Tipo.DIGITO)
                     continue
 
+
             if self.estado == 13:
                 if c == '\'':
                     self.lexema += c
@@ -331,10 +368,6 @@ class Lexicojs():
                 if c == '*':
                     self.lexema += c
                     self.__addToken(Tipo.ASTERISCO)
-                    continue
-
-                if c == '/':
-                    self.__addToken(Tipo.DIAGONAL)
                     continue
 
                 if c == '(':
@@ -395,6 +428,16 @@ class Lexicojs():
                 if c == '<':
                     self.lexema +=c
                     self.__addToken(Tipo.MENOR_QUE)
+                    continue
+
+                if c == ':':
+                    self.lexema +=c
+                    self.__addToken(Tipo.DOS_PUNTOS)
+                    continue
+
+                elif c == ':':
+                    self.lexema +=c
+                    self.__addToken(Tipo.NEGACION)
                     continue
 
     # diccionario de simbolos aceptados en el lenguaje

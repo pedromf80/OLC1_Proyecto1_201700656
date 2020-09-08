@@ -38,10 +38,11 @@ class Tipo(Enum):
     COMA = 'Coma'
     PUNTO='Punto'
     PUNTO_COMA='Punto y coma'
+    DOS_PUNTOS = "Dos Puntos"
     CADENA='Cadena'
     IGUAL = 'Signo Igual'
     GUION_BAJO = 'Gion Bajo'
-    ERROR = 'Error caracter Desconocido'
+    ERROR = 'Caracter Desconocido'
 
 class Token():
     def __init__(self, tipo, lexema, fila, columna):

@@ -1,10 +1,10 @@
 import tkinter as tk
 from tkinter import scrolledtext, messagebox, filedialog
-import os
 from Lexicojs import Lexicojs
 from Lexicocss import Lexicocss
 from Lexicohtml  import Lexicohtml
-
+from Tokenjs import Tipo
+import os
 
 # clase ventana
 class Window():
@@ -75,7 +75,6 @@ class Window():
         self.console.pack(expand=0, fill=tk.BOTH)
 
     # guardar archivo si se modifico
-
     def guardar_si_modifico(self, event=None):
         if self.editor.edit_modified():  # modified
             # yes = True, no = False, cancel = None
@@ -168,11 +167,26 @@ class Window():
             input_string = self.editor.get('1.0', 'end-1c')
             x, v = self.file_path.split(".")
             if v == 'js':
-                Lexicojs(input_string)
+                #Lexicojs(input_string)
+                self.__jsConsole(input_string)
             if v == 'css':
                 Lexicocss(input_string)
             if v == 'html':
                 Lexicohtml(input_string)
+
+    def __jsConsole(self, text):
+        a = Lexicojs(text)
+        lstoken = a.getListToken()
+        head = ' Fila\tColumna\t\tTipo\t\t\tLexema\n'
+        for token in lstoken:
+            if Tipo.ERROR == token.tipoToken:
+                head = head+' '+str(token.fila)+'\t'+str(token.columna)+'\t\t'+token.tipoToken.value+'\t\t\t'+token.lexema+'\n'
+                #print("Tipo token: "+token.tipoToken.value)
+                #print("Lexema: "+token.lexema)
+                #print("Columna: "+str(token.columna))
+                #print("Fila: "+str(token.fila))
+        self.console.delete(1.0, 'end')
+        self.console.insert(1.0, head)
             
 
     def highlighter(self, event):
