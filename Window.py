@@ -187,7 +187,7 @@ class Window():
                 #print("Fila: "+str(token.fila))
         self.console.delete(1.0, 'end')
         self.console.insert(1.0, head)
-        print(a.getSourceClean())
+        #print(a.getSourceClean())
             
 
     def highlighter(self, event):
