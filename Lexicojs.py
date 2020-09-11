@@ -355,6 +355,10 @@ class Lexicojs():
                     self.outcodejs += c
                     self.estado = 11
                     continue
+                else:
+                    self.__addToken(Tipo.DIGITO)
+                    count -=1
+                    continue
 
             if self.estado == 11:
                 if c.isdigit():
