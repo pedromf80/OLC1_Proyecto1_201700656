@@ -6,7 +6,6 @@ class Lexicojs():
         self.listToken = []
         self.outcodejs = ""
         self.lexer_analyzer(text)
-        
 
     def lexer_analyzer(self, text):
         self.yycolum = 0
@@ -343,6 +342,7 @@ class Lexicojs():
                     self.outcodejs += c
                     self.estado = 10
                     continue
+
                 elif self.__SB(c):
                     self.__addToken(Tipo.DIGITO)
                     count -= 1
@@ -356,8 +356,9 @@ class Lexicojs():
                     self.estado = 11
                     continue
                 else:
+                    self.lexema = self.lexema.replace('.','')
                     self.__addToken(Tipo.DIGITO)
-                    count -=1
+                    count -= 2
                     continue
 
             if self.estado == 11:
@@ -514,6 +515,6 @@ class Lexicojs():
     def getListToken(self):
         return self.listToken
 
-    #retorna el string codigo limpio
+    # retorna el string codigo limpio
     def getSourceClean(self):
-        return self.outcodejs    
+        return self.outcodejs

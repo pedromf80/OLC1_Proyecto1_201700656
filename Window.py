@@ -179,9 +179,9 @@ class Window():
         lstoken = a.getListToken()
         head = ' Fila\tColumna\t\tTipo\t\t\tLexema\n'
         for token in lstoken:
-            #if Tipo.ERROR == token.tipoToken:
+            if Tipo.ERROR == token.tipoToken:
                 head = head+' '+str(token.fila)+'\t'+str(token.columna)+'\t\t'+token.tipoToken.value+'\t\t\t'+token.lexema+'\n'
-                print("Tipo token: "+token.tipoToken.value)
+                #print("Tipo token: "+token.tipoToken.value)
                 #print("Lexema: "+token.lexema)
                 #print("Columna: "+str(token.columna))
                 #print("Fila: "+str(token.fila))
