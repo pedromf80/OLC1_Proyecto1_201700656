@@ -185,7 +185,10 @@ class Lexicojs():
                     self.estado = 4
                     continue
                 else:
-                    self.__addToken(Tipo.DIAGONAL)
+                    i = self.outcodejs.__len__()
+                   # self.outcodejs = self.outcodejs[:i] + 
+                    self.__addToken(Tipo.ERROR)
+                    
                     continue
 
             if self.estado == 2:
@@ -368,6 +371,9 @@ class Lexicojs():
                     continue
                 elif self.__SB(c):
                     self.__addToken(Tipo.DIGITO)
+                    continue
+                else:
+                    self.__addToken(Tipo.ERROR)
                     continue
 
             if self.estado == 13:
