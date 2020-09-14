@@ -54,16 +54,15 @@ class Tipo(Enum):
     MENOS = 'Signo Menos'
     PORCENTAJE = 'Porcentaje'
     MAS = 'Mas'
+    DIAGONAL = 'Diagonal'
     ASTERISCO = 'Asterisco'
     NUMERAL = 'Numeral'
     HEXADECIMAL = 'Digito Hexadecimal'
-    DIGITO = 'Digito'
+    NUMERO_FLOAT = 'Digito Decimal'
     VALOR = 'Valor'
-    ERROR = 'Caracter Desconocido'
+    UNIDAD_MEDIDA = 'Unidad de medida'
+    ERROR = 'Error Lexico'
     
-
-
-
 class Token():
     def __init__(self, tipo, lexema, fila, columna):
         self.tipoToken = tipo

@@ -225,6 +225,8 @@ class Lexicojs():
                         #self.outcodejs += c
                         self.xxrow += 1
                         self.yycolum = 0
+                    if count == ls.__len__():
+                        self.__addToken(Tipo.ERROR)     
                     self.lexema += c
                     self.outcodejs += c
                     continue
