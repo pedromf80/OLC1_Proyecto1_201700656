@@ -1,7 +1,7 @@
 digraph finite_state_machine {
 	rankdir=LR;
 	size="8,5"
-	node [shape = doublecircle]; 1 4 5 7 8 9 11 12
+	node [shape = doublecircle]; 1 4 5 7 8 9 11 12 13 14
 	node [shape = circle];
 	0 -> 1 [ label = "/" ];
 	1 -> 2 [ label = "*" ];
@@ -11,11 +11,11 @@ digraph finite_state_machine {
     3 -> 4 [ label = "/"];
     0 -> 5 [ label = "L"];
     5 -> 5 [ label = "L | - | D"];
-    12 -> 5 [ label = "- | L"];
-    9 -> 5 [label = "L"]
-    0 -> 17 [ label = "-"];
-    17 -> 9 [ label = "D"];
-    17 -> 5 [ label = "L"];
+   // 12 -> 5 [ label = "- | L"];
+   // 9 -> 5 [label = "L"]
+    0 -> 14 [ label = "-"];
+    14 -> 9 [ label = "D"];
+    14 -> 5 [ label = "L"];
     0 -> 6 [ label = "\""];
     6 -> 6 [ label = "CC"];
     6 -> 7 [ label = "\""];
@@ -26,14 +26,7 @@ digraph finite_state_machine {
     10 -> 11 [ label = "D"];
     11 -> 11 [ label = "D"]; 
  //   9 -> 12 [ label = "HEX"];
-    12 -> 12 [ label = "HEX | D"];
     0 -> 12 [ label = "#"];
-    9 -> 13 [ label = "p"];
-    13 -> 7 [ label = "x | t | c"];
-    9 -> 14 [ label = "e | c | m"];
-    14 -> 7 [ label = "m"];
-    9 -> 15 [ label = "v"];
-    15 ->  7 [ label = "h | w"];
-    9 -> 16 [ label = "i"];
-    16 -> 7 [ label = "n"];
+    12 -> 13 [label = "HEX|D"]
+	13 -> 13 [ label = "HEX|D"]
 }

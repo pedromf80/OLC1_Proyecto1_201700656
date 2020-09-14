@@ -40,6 +40,7 @@ class Tipo(Enum):
     MIN_WIDTH = 'Palabra Reservada'
     MAX_HEIGHT = 'Palabra Reservada'
     MIN_HEIGHT = 'Palabra Reservada'
+    ID = 'Id'
     LLAVE_IZ = 'LLave Izquierdo'
     LLAVE_DE = 'Llave Derecho'
     DIGITO = 'Digito'
@@ -51,7 +52,7 @@ class Tipo(Enum):
     PARENTESIS_I = "Parentesis Izquierdo"
     PARENTESIS_D = "Parentisis Derecho"
     CADENA = 'Cadena'
-    MENOS = 'Signo Menos'
+    GION_MEDIO = 'Giom Medio'
     PORCENTAJE = 'Porcentaje'
     MAS = 'Mas'
     DIAGONAL = 'Diagonal'
