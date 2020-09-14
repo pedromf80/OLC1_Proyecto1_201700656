@@ -186,9 +186,8 @@ class Lexicojs():
                     continue
                 else:
                     i = self.outcodejs.__len__()
-                   # self.outcodejs = self.outcodejs[:i] + 
+                    self.outcodejs = self.outcodejs[:i-1]
                     self.__addToken(Tipo.ERROR)
-                    
                     continue
 
             if self.estado == 2:
@@ -212,6 +211,7 @@ class Lexicojs():
                     self.__addToken(Tipo.COMENTARIO_M)
                     continue
                 else:
+                    self.__addToken(Tipo.ERROR)
                     continue
 
             if self.estado == 4:
