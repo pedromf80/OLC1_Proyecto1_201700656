@@ -1,0 +1,28 @@
+digraph finite_state_machine {
+	rankdir=LR;
+	size="8,5"
+	node [shape = doublecircle]; 1 7 8 9 11 13 14
+	node [shape = circle];
+    0 -> 1 [ label = "<"];
+    1 -> 2 [ label = "!"];
+    2 -> 3 [ label = "-"];
+    3 -> 4 [ label = "-"];
+    4 -> 4 [ label = "CC"];
+    4 -> 5 [ label = "-"];
+    5 -> 4 [ label = "CC"];    
+    5 -> 6 [ label = "-"];
+    6 -> 7 [ label = ">"];
+    0 -> 8 [ label = "L"];
+    8 -> 8 [ label = "L|D"];
+    0 -> 9 [ label = ">"];
+    9 -> 10 [ label = "CC"];
+    10 -> 11 [ label = "<"];
+    10 -> 10 [ label = "CC"]; 
+    0 -> 12 [ label = "\""];
+    12 -> 12 [ label = "CC"];
+    12 -> 13 [ label = "\""];
+    0 -> 14 [ label = "=|/"];
+    0 -> 15 [ label = "'"];
+    15 -> 15 [ label = "CC"];
+    15 -> 13 [ label = "'"];
+}

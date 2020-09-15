@@ -1,7 +1,6 @@
 
 from Tokencss import Tipo, Token
 
-
 class Lexicocss():
     def __init__(self, text):
         self.listToken = []

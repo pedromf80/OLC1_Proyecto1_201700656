@@ -1,6 +1,5 @@
 from enum import Enum
 
-
 class Tipo(Enum):
     COLOR = 'Palabra Reservada'
     BACKGROUND_COLOR = 'Palabra Reservada'

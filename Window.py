@@ -2,8 +2,7 @@ import tkinter as tk
 from tkinter import scrolledtext, messagebox, filedialog
 from Lexicojs import Lexicojs
 from Lexicocss import Lexicocss
-from Lexicohtml  import Lexicohtml
-from Tokenjs import Tipo
+from Lexicohtml import Lexicohtml
 import os
 
 # clase ventana
@@ -62,7 +61,8 @@ class Window():
         self.label = tk.Label(self.frame, text='Entrada', height=1)
         self.label.pack(expand=0, fill=tk.X)
         self.editor = scrolledtext.ScrolledText(self.frame, wrap=tk.WORD)
-        self.editor.config(bg='#001a33', insertbackground='white', fg='#b3b3b3')
+        self.editor.config(
+            bg='#001a33', insertbackground='white', fg='#b3b3b3')
         self.editor.pack(expand=1, fill=tk.BOTH)
         self.editor.focus()
         self.editor.bind('<Key>', self.highlighter)
@@ -155,41 +155,65 @@ class Window():
 
     def redo(self, event=None):
         self.editor.edit_redo()
-        
+
     def reset(self, event=None):
-        self.editor.edit_reset()    
+        self.editor.edit_reset()
 
     # metodo para el analisis lexico dependiendo del tipo del archivo
     def run_lex_analyzer(self, event=None):
         if self.file_path == None:
             self.guardar_archivo(None)
-        else:    
+        else:
             input_string = self.editor.get('1.0', 'end-1c')
             x, v = self.file_path.split(".")
             if v == 'js':
-                #Lexicojs(input_string)
+                # Lexicojs(input_string)
                 self.__jsConsole(input_string)
+                self.file_path = None
             if v == 'css':
-                Lexicocss(input_string)
+                #Lexicocss(input_string)
+                self.__cssConsole(input_string)
+                self.file_path = None
             if v == 'html':
                 Lexicohtml(input_string)
+                self.file_path = None
 
+    # salida en consola los errores lexicos del archivo js
     def __jsConsole(self, text):
+        from Tokenjs import Tipo, Token
         a = Lexicojs(text)
         lstoken = a.getListToken()
         head = ' Fila\tColumna\t\tTipo\t\t\tLexema\n'
         for token in lstoken:
             if Tipo.ERROR == token.tipoToken:
-                head = head+' '+str(token.fila)+'\t'+str(token.columna)+'\t\t'+token.tipoToken.value+'\t\t\t'+token.lexema+'\n'
+                head = head+' '+str(token.fila)+'\t'+str(token.columna) + \
+                    '\t\t'+token.tipoToken.value+'\t\t\t'+token.lexema+'\n'
                 #print("Tipo token: "+token.tipoToken.value)
                 #print("Lexema: "+token.lexema)
                 #print("Columna: "+str(token.columna))
                 #print("Fila: "+str(token.fila))
         self.console.delete(1.0, 'end')
         self.console.insert(1.0, head)
-        #print(a.getSourceClean())
-            
+        # print(a.getSourceClean())
 
+    # salida en consola errores lexicos del archivo css
+    def __cssConsole(self, text):
+        from Tokencss import Tipo, Token
+        a = Lexicocss(text)
+        lstoken = a.getListToken()
+        head = ' Fila\tColumna\t\tTipo\t\t\tLexema\n'
+        for token in lstoken:
+            if Tipo.ERROR == token.tipoToken:
+                head = head+' '+str(token.fila)+'\t'+str(token.columna) + \
+                    '\t\t'+token.tipoToken.value+'\t\t\t'+token.lexema+'\n'
+                #print("Tipo token: "+token.tipoToken.value)
+                #print("Lexema: "+token.lexema)
+                #print("Columna: "+str(token.columna))
+                #print("Fila: "+str(token.fila))
+        self.console.delete(1.0, 'end')
+        self.console.insert(1.0, head)
+        # print(a.getSourceClean())
+    
     def highlighter(self, event):
         # diccionario de palabras reservadas y color respectivo
         highlightWords = {'if': 'red',
@@ -200,8 +224,8 @@ class Window():
                           'var': 'red',
                           'find': 'red',
                           'self': 'red',
-                          '=' : '#ff751a',
-                          'function':'red',
+                          '=': '#ff751a',
+                          'function': 'red',
                           'this': 'red'
                           }
 
@@ -212,11 +236,12 @@ class Window():
                 # buscar concurrencia de k
                 startIndex = self.editor.search(k, startIndex, tk.END)
                 if startIndex:
-                    endIndex = self.editor.index('%s+%dc' % (startIndex, (len(k))))  # find end of k
-                    self.editor.tag_add(k, startIndex, endIndex)  # add tag to k
-                    self.editor.tag_config(k, foreground=v)      # and color it with v
+                    endIndex = self.editor.index(
+                        '%s+%dc' % (startIndex, (len(k))))  # find end of k
+                    self.editor.tag_add(
+                        k, startIndex, endIndex)  # add tag to k
+                    # and color it with v
+                    self.editor.tag_config(k, foreground=v)
                     startIndex = endIndex  # reset startIndex to continue searching
                 else:
                     break
-
-        
