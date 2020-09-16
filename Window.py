@@ -3,6 +3,7 @@ from tkinter import scrolledtext, messagebox, filedialog
 from Lexicojs import Lexicojs
 from Lexicocss import Lexicocss
 from Lexicohtml import Lexicohtml
+from Reportes import Report
 import os
 
 # clase ventana
@@ -45,13 +46,16 @@ class Window():
         # fileEdit.add_command(label="Pegar")
         fileSetting = tk.Menu(self.menu, tearoff=0)
         analiticLex = tk.Menu(self.menu, tearoff=0)
+        syntaxAnalizer = tk.Menu(self.menu, tearoff=0)
         analiticLex.add_command(label='Analizar Archivo',
                                 command=self.run_lex_analyzer)
+        syntaxAnalizer.add_command(label="Analizar Archivo", command=self.__syntaxAnalizer)    
         fileHelp = tk.Menu(self.menu,  tearoff=0)
         fileReport = tk.Menu(self.menu, tearoff=0)
         self.menu.add_cascade(label="Archivo", menu=fileMenu)
         self.menu.add_cascade(label="Editar", menu=fileEdit)
         self.menu.add_cascade(label="Analizador Lexico", menu=analiticLex)
+        self.menu.add_cascade(label="Analizador Sintactico", menu=syntaxAnalizer)
         self.menu.add_cascade(label="Configuracion", menu=fileSetting)
         self.menu.add_cascade(label="Reporte", menu=fileReport)
         self.menu.add_cascade(label="Ayuda", menu=fileHelp)
@@ -71,7 +75,7 @@ class Window():
         self.label = tk.Label(self.frame, text='Consola')
         self.label.pack(expand=0, fill=tk.X)
         self.console = scrolledtext.ScrolledText(self.frame, wrap=tk.WORD)
-        self.console.configure(height=10, background='black', fg='green')
+        self.console.configure(height=10, background='black', fg='deep sky blue')
         self.console.pack(expand=0, fill=tk.BOTH)
 
     # guardar archivo si se modifico
@@ -106,7 +110,7 @@ class Window():
             if resultado != None:  # None => Abortar o Guardar cancelar, False =>Descartar, True = Guardar o no modificar
                 if ruta_archivo == None:
                     ruta_archivo = filedialog.askopenfilename(initialdir="/home/pedro", title="Select file", filetypes=(
-                        ("Archivos html", "*.html"), ("Archivos de estilo css", "*.css"), ("Archivos de fuente js", "*.js"), ("Todos los archivos", "*.*")))
+                        ("Archivos de fuente js", "*.js"), ("Archivos de estilo css", "*.css"), ("Archivos html", "*.html"), ("Archivos rmt", "*.rmt"), ("Todos los archivos", "*.*")))
                 if ruta_archivo != None and ruta_archivo != "":
                     with open(ruta_archivo, encoding="utf-8") as f:
                         fileContents = f.read()  # Get all the text from file.
@@ -139,7 +143,7 @@ class Window():
                 self.editor.edit_modified(False)
                 self.file_path = ruta_archivo
         #        self.set_title()
-                return "saved"
+                return "Guardado!"
         except FileNotFoundError:
             print('FileNotFoundError')
             return "cancelled"
@@ -175,8 +179,11 @@ class Window():
                 self.__cssConsole(input_string)
                 self.file_path = None
             if v == 'html':
-                Lexicohtml(input_string)
+                #Lexicohtml(input_string)
+                self.__htmlConsole(input_string)
                 self.file_path = None
+            if v == 'rmt':
+                print(input_string)    
 
     # salida en consola los errores lexicos del archivo js
     def __jsConsole(self, text):
@@ -194,6 +201,8 @@ class Window():
                 #print("Fila: "+str(token.fila))
         self.console.delete(1.0, 'end')
         self.console.insert(1.0, head)
+        r = Report()
+        r.reportjs("Reportejs.html", " JS ", lstoken)
         # print(a.getSourceClean())
 
     # salida en consola errores lexicos del archivo css
@@ -213,7 +222,36 @@ class Window():
         self.console.delete(1.0, 'end')
         self.console.insert(1.0, head)
         # print(a.getSourceClean())
+        r = Report()
+        r.reportcss("Reportecss.html", " CSS ", lstoken)
+       
     
+    # salida en consola errores lexicos del archivo html
+    def __htmlConsole(self, text):
+        from Tokenhtml import Tipo, Token
+        a = Lexicohtml(text)
+        lstoken = a.getListToken()
+        head = ' Fila\tColumna\t\tTipo\t\t\tLexema\n'
+        for token in lstoken:
+            if Tipo.ERROR == token.tipoToken:
+                head = head+' '+str(token.fila)+'\t'+str(token.columna) + \
+                    '\t\t'+token.tipoToken.value+'\t\t\t'+token.lexema+'\n'
+                #print("Tipo token: "+token.tipoToken.value)
+                #print("Lexema: "+token.lexema)
+                #print("Columna: "+str(token.columna))
+                #print("Fila: "+str(token.fila))
+        self.console.delete(1.0, 'end')
+        self.console.insert(1.0, head)
+        r = Report()
+        r.reporthtml("Reportehtml.html", " HTML", lstoken)
+        # print(a.getSourceClean())
+
+    
+    # inicia el analizador sintactico para el archivo rmt
+    def __syntaxAnalizer(self, event=None):
+        print('Analizador sinctactico')
+        pass
+
     def highlighter(self, event):
         # diccionario de palabras reservadas y color respectivo
         highlightWords = {'if': 'red',
@@ -245,3 +283,6 @@ class Window():
                     startIndex = endIndex  # reset startIndex to continue searching
                 else:
                     break
+
+    def __createoutfile(self):
+        pass

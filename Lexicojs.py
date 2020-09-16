@@ -187,7 +187,7 @@ class Lexicojs():
                 else:
                     i = self.outcodejs.__len__()
                     self.outcodejs = self.outcodejs[:i-1]
-                    self.__addToken(Tipo.ERROR)
+                    self.__addToken(Tipo.DIAGONAL)
                     continue
 
             if self.estado == 2:

@@ -67,7 +67,9 @@ class Lexicohtml():
                     self.yycolum = 0
                     continue
                 else:
-                    pass
+                    self.lexema += c
+                    self.__addToken(Tipo.ERROR)
+                    continue
 
             if self.estado == 1:
                 if c == '!':
@@ -275,6 +277,14 @@ class Lexicohtml():
                 elif c == '=':
                     self.__addToken(Tipo.ID)
                     count -= 1
+                    continue
+                else:
+                    auxlexema = self.lexema
+                    self.lexema = ''
+                    self.lexema += c
+                    self.__addToken(Tipo.ERROR)
+                    self.lexema = auxlexema
+                    self.estado = 8
                     continue
 
             # si es contenido
