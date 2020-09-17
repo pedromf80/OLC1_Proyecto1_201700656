@@ -64,11 +64,12 @@ class Tipo(Enum):
     ERROR = 'Error Lexico'
     
 class Token():
-    def __init__(self, tipo, lexema, fila, columna):
+    def __init__(self, tipo, lexema, fila, columna, estado):
         self.tipoToken = tipo
         self.lexema = lexema
         self.fila = fila
         self.columna = columna
+        self.estado = estado
 
     def getTipo(self):
         return self.tipoToken

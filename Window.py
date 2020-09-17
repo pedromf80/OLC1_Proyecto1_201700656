@@ -4,9 +4,12 @@ from Lexicojs import Lexicojs
 from Lexicocss import Lexicocss
 from Lexicohtml import Lexicohtml
 from Reportes import Report
+from Syntax import LexicoRmt, Tipormt, Tokenrmt, sintaxAnalixer
 import os
 
 # clase ventana
+
+
 class Window():
     # constructor de la clase ventana para la app
     def __init__(self):
@@ -44,21 +47,23 @@ class Window():
         fileEdit.add_command(label="Atras", command=self.undo)
         fileEdit.add_command(label="Limpiar", command=self.reset)
         # fileEdit.add_command(label="Pegar")
-        fileSetting = tk.Menu(self.menu, tearoff=0)
+        # fileSetting = tk.Menu(self.menu, tearoff=0)
         analiticLex = tk.Menu(self.menu, tearoff=0)
         syntaxAnalizer = tk.Menu(self.menu, tearoff=0)
         analiticLex.add_command(label='Analizar Archivo',
                                 command=self.run_lex_analyzer)
-        syntaxAnalizer.add_command(label="Analizar Archivo", command=self.__syntaxAnalizer)    
-        fileHelp = tk.Menu(self.menu,  tearoff=0)
-        fileReport = tk.Menu(self.menu, tearoff=0)
+        syntaxAnalizer.add_command(
+            label="Analizar Archivo", command=self.__syntaxAnalizer)
+        # fileHelp = tk.Menu(self.menu,  tearoff=0)
+        # fileReport = tk.Menu(self.menu, tearoff=0)
         self.menu.add_cascade(label="Archivo", menu=fileMenu)
         self.menu.add_cascade(label="Editar", menu=fileEdit)
         self.menu.add_cascade(label="Analizador Lexico", menu=analiticLex)
-        self.menu.add_cascade(label="Analizador Sintactico", menu=syntaxAnalizer)
-        self.menu.add_cascade(label="Configuracion", menu=fileSetting)
-        self.menu.add_cascade(label="Reporte", menu=fileReport)
-        self.menu.add_cascade(label="Ayuda", menu=fileHelp)
+        self.menu.add_cascade(
+            label="Analizador Sintactico", menu=syntaxAnalizer)
+        # self.menu.add_cascade(label="Configuracion", menu=fileSetting)
+        # self.menu.add_cascade(label="Reporte", menu=fileReport)
+        # self.menu.add_cascade(label="Ayuda", menu=fileHelp)
 
     # genera el texbox del la de entra y salida de texto
     def addTexbox(self):
@@ -75,7 +80,8 @@ class Window():
         self.label = tk.Label(self.frame, text='Consola')
         self.label.pack(expand=0, fill=tk.X)
         self.console = scrolledtext.ScrolledText(self.frame, wrap=tk.WORD)
-        self.console.configure(height=10, background='black', fg='deep sky blue')
+        self.console.configure(
+            height=10, background='black', fg='deep sky blue')
         self.console.pack(expand=0, fill=tk.BOTH)
 
     # guardar archivo si se modifico
@@ -175,15 +181,13 @@ class Window():
                 self.__jsConsole(input_string)
                 self.file_path = None
             if v == 'css':
-                #Lexicocss(input_string)
+                # Lexicocss(input_string)
                 self.__cssConsole(input_string)
                 self.file_path = None
             if v == 'html':
-                #Lexicohtml(input_string)
+                # Lexicohtml(input_string)
                 self.__htmlConsole(input_string)
                 self.file_path = None
-            if v == 'rmt':
-                print(input_string)    
 
     # salida en consola los errores lexicos del archivo js
     def __jsConsole(self, text):
@@ -195,12 +199,13 @@ class Window():
             if Tipo.ERROR == token.tipoToken:
                 head = head+' '+str(token.fila)+'\t'+str(token.columna) + \
                     '\t\t'+token.tipoToken.value+'\t\t\t'+token.lexema+'\n'
-                #print("Tipo token: "+token.tipoToken.value)
-                #print("Lexema: "+token.lexema)
-                #print("Columna: "+str(token.columna))
-                #print("Fila: "+str(token.fila))
+                # print("Tipo token: "+token.tipoToken.value)
+                # print("Lexema: "+token.lexema)
+                # print("Columna: "+str(token.columna))
+                # print("Fila: "+str(token.fila))
         self.console.delete(1.0, 'end')
         self.console.insert(1.0, head)
+        self.__createoutfile(a.getSourceClean(), 'Salida.js')
         r = Report()
         r.reportjs("Reportejs.html", " JS ", lstoken)
         # print(a.getSourceClean())
@@ -210,23 +215,25 @@ class Window():
         from Tokencss import Tipo, Token
         a = Lexicocss(text)
         lstoken = a.getListToken()
-        head = ' Fila\tColumna\t\tTipo\t\t\tLexema\n'
+        head = ' Fila\tColumna\t\tTipo\t\t\tLexema\t\t\t\t\ttEstado\n'
         for token in lstoken:
-            if Tipo.ERROR == token.tipoToken:
-                head = head+' '+str(token.fila)+'\t'+str(token.columna) + \
-                    '\t\t'+token.tipoToken.value+'\t\t\t'+token.lexema+'\n'
-                #print("Tipo token: "+token.tipoToken.value)
-                #print("Lexema: "+token.lexema)
-                #print("Columna: "+str(token.columna))
-                #print("Fila: "+str(token.fila))
+            # if Tipo.ERROR == token.tipoToken:
+            head = head+' '+str(token.fila)+'\t'+str(token.columna) +\
+                '\t\t'+token.tipoToken.value+'\t\t\t' + \
+                token.lexema+'\t\t\t\t\t'+str(token.estado)+'\n'
+            # print("Tipo token: "+token.tipoToken.value)
+            # print("Lexema: "+token.lexema)
+            # print("Columna: "+str(token.columna))
+            # print("Fila: "+str(token.fila))
         self.console.delete(1.0, 'end')
         self.console.insert(1.0, head)
+        self.__createoutfile(a.getSourceClean(), 'Salida.css')
         # print(a.getSourceClean())
         r = Report()
         r.reportcss("Reportecss.html", " CSS ", lstoken)
-       
-    
+
     # salida en consola errores lexicos del archivo html
+
     def __htmlConsole(self, text):
         from Tokenhtml import Tipo, Token
         a = Lexicohtml(text)
@@ -236,21 +243,40 @@ class Window():
             if Tipo.ERROR == token.tipoToken:
                 head = head+' '+str(token.fila)+'\t'+str(token.columna) + \
                     '\t\t'+token.tipoToken.value+'\t\t\t'+token.lexema+'\n'
-                #print("Tipo token: "+token.tipoToken.value)
-                #print("Lexema: "+token.lexema)
-                #print("Columna: "+str(token.columna))
-                #print("Fila: "+str(token.fila))
+                # print("Tipo token: "+token.tipoToken.value)
+                # print("Lexema: "+token.lexema)
+                # print("Columna: "+str(token.columna))
+                # print("Fila: "+str(token.fila))
         self.console.delete(1.0, 'end')
         self.console.insert(1.0, head)
+        self.__createoutfile(a.getSourceClean(), 'Salida.html')
         r = Report()
         r.reporthtml("Reportehtml.html", " HTML", lstoken)
         # print(a.getSourceClean())
 
-    
     # inicia el analizador sintactico para el archivo rmt
+
     def __syntaxAnalizer(self, event=None):
-        print('Analizador sinctactico')
-        pass
+        if self.file_path == None:
+            self.guardar_archivo(None)
+        else:
+            input_string = self.editor.get('1.0', 'end-1c')
+            x, v = self.file_path.split(".")
+            if v == 'rmt':
+                head = "Expresion\t\t\t\t\t\t"+"Estado de Aceptacion\n"
+                l = LexicoRmt()
+                s = sintaxAnalixer()
+                txtin = input_string.split('\n')
+                for outcon in txtin:
+                    l.lexer_analyzer(input_string)
+                    lsToken = l.getListToken()
+                    #s.parser(lsToken)
+                    #for dl in lsToken:
+                    #    print(dl.lexema+'\t\t\t'+dl.tipoToken.value)
+                    head = head + outcon+"\t\t\t\t\t\t"+str(s.parser(lsToken))+"\n"
+                self.file_path = None
+                self.console.delete(1.0, 'end')
+                self.console.insert(1.0, head)
 
     def highlighter(self, event):
         # diccionario de palabras reservadas y color respectivo
@@ -284,5 +310,12 @@ class Window():
                 else:
                     break
 
-    def __createoutfile(self):
-        pass
+    def __createoutfile(self, text, ruta_archivo):
+        try:
+            with open(ruta_archivo, 'wb') as f:
+                f.write(bytes(text, 'UTF-8'))
+                print('Archivo creado! => '+ruta_archivo)
+                return "Guardado!"
+        except FileNotFoundError:
+            print('FileNotFoundError')
+            return "Error en la Creacion!"

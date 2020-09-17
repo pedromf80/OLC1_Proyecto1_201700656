@@ -563,7 +563,7 @@ class Lexicocss():
 
     def __addToken(self, Tipo):
         self.listToken.append(
-            Token(Tipo, self.lexema, self.xxrow, self.yycolum))
+            Token(Tipo, self.lexema, self.xxrow, self.yycolum, self.estado))
         self.estado = 0
         self.lexema = ''
 
