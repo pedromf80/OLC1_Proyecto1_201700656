@@ -297,6 +297,7 @@ class Lexicohtml():
                             self.estado = 10
                             continue
                     continue
+
             if self.estado == 10:
                 if c == '<':
                     self.estado = 11

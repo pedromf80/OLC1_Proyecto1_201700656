@@ -23,7 +23,7 @@ class Window():
 
     # metodo que inicia todo los componentes de nuestra principal
     def initComponents(self):
-        self.root.title("ML WEB EDITOR")
+        self.root.title("JPR EDITOR")
         self.root.resizable(1, 1)
         self.root.config(menu=self.menu)
         self.frame.pack(ipadx=180, expand=1, fill=tk.BOTH)
